@@ -1,0 +1,84 @@
+<?php
+include 'conectkarl.php';
+
+switch ($_POST['pedir']) {
+	case 'crear': crear($datab); break;
+	case 'listar': listar($datab); break;
+	case 'listarTodo': listarTodo($datab); break;
+	case 'actualizar': actualizar($datab); break;
+	case 'eliminar': eliminar($datab); break;
+	default: break;
+}
+
+function listar($db){
+	$sql=$db->prepare("SELECT *, LPAD(id, 3, '0') AS idFormateado FROM `cotizacion` where id=?;");
+	$sql->execute([ $_POST['id']]);
+	$row = $sql->fetch(PDO::FETCH_ASSOC);
+
+	$sqlCli = $db->prepare("SELECT * from cliente where id = ?;");
+	$sqlCli -> execute([ $row['idCliente'] ]);
+	$rowCli = $sqlCli->fetch(PDO::FETCH_ASSOC);
+	
+	echo json_encode(array(
+		'cliente' => $rowCli,
+		'evento'=> $row,
+		'costo' => $row
+	));
+}
+function listarTodo($db){
+	$filas = [];
+	$sql=$db->prepare("SELECT c.*, `dni`, `nombre`, `celular`, `email`, LPAD(c.id, 3, '0') AS idFormateado FROM 
+	`cotizacion` c 
+	inner join cliente cl on cl.id = c.idCliente
+	where c.activo=1 and estado in (0,1);");
+	$sql->execute();
+	while($row = $sql->fetch(PDO::FETCH_ASSOC))
+		$filas [] = $row;
+
+	echo json_encode($filas);
+}
+function crear($db){
+	$cliente = json_decode($_POST['cliente'], true);
+	$sqlCliente= $db->prepare("INSERT INTO `cliente`(`dni`, `nombre`, `celular`, `email`, `registro`) VALUES (?,?,?,?,
+	 CONVERT_TZ(NOW(), @@session.time_zone, '-05:00') );");
+	$sqlCliente->execute([
+		$cliente['dni'],$cliente['nombre'],$cliente['celular'],$cliente['email']
+	]);
+	$idCliente = $db->lastInsertId();
+	
+	$evento = json_decode($_POST['evento'], true);
+	$costo = json_decode($_POST['costo'], true);
+	$sql = $db->prepare("INSERT INTO `cotizacion`(`idCliente`, `fechaEvento`, `lugar`, `agrupacion`, `direccion`,
+	`duracion`, `horario`, `hora`, `observaciones`, `tipo`
+	`total`,`promocion`, `adelanto`, `fechaAdelanto`, registro) VALUES (
+		?,?,?,?,?,
+		?,?,?,?,?,
+		?,?,?, CONVERT_TZ(NOW(), @@session.time_zone, '-05:00')
+	)");
+	$sql->execute([
+		$idCliente, $evento['fecha'], $evento['lugar'], $evento['agrupacion'], $evento['direccion'], 
+		$evento['duracion'], $evento['horario'], $evento['hora'], $evento['observaciones'], $evento['tipo']
+		, $costo['total'], $costo['promocion'], $costo['adelanto'], $costo['fecha']
+	]);
+	$idEvento = $db->lastInsertId();
+	echo $idEvento;
+}
+function actualizar($db){
+	$evento = json_decode($_POST['evento'], true);
+	$sql=$db->prepare("UPDATE `cotizacion` SET 
+	estado = ?, horario = ?, hora = ?, duracion = ?, direccion=?
+	where id = ?; ");
+	if($sql->execute([
+		$evento['estado'], $evento['horario'], $evento['hora'], $evento['duracion'], $evento['direccion'], 
+		$_POST['id']
+	])){
+		echo 'ok';
+	}else echo 'error';
+}
+function eliminar($db){
+	$sql=$db->prepare("UPDATE `cotizacion` SET activo = 0 where id = ?; ");
+	if($sql->execute([ $_POST['id'] ])){
+		echo 'ok';
+	}else echo 'error';
+}
+?>

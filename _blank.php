@@ -8,8 +8,10 @@
 </head>
 <body>
 	<?php include 'nav.php'; ?>
-	<div class="container">
-		<p class="display-4">Titulo</p>
+	<div class="container" id="app">
+		<p class="fs-4">Titulo</p>
 	</div>
+
+	<?php include 'footer.php'; ?>
 </body>
 </html>

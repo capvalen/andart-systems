@@ -7,8 +7,7 @@
 					<a class="nav-link active" aria-current="page" href="index.php"><i class="bi bi-house"></i> Inicio</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" aria-current="page" href="registro-cotizacion.php"><i class="bi bi-feather"></i> Registro de Cotización</a>
-					<a class="nav-link" aria-current="page" href="registro-contrato.php"><i class="bi bi-feather"></i> Registro de Contrato</a>
+					<a class="nav-link" aria-current="page" href="cotizaciones.php"><i class="bi bi-feather"></i> Cotizaciones</a>
 				</li>
 			</ul>
 		</div>
