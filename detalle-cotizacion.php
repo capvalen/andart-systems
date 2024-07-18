@@ -14,7 +14,7 @@
 			<div class="col-12 col-lg-9 mx-auto">
 				<div class="d-grid d-flex justify-content-between">
 					<button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-printer"></i> Actualizar cotización</button>
-					<button class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir cotización</button>
+					<a href="cotizacion-pdf.php?id=<?=$_GET['id']?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir cotización</a>
 					<button class="btn btn-outline-secondary"><i class="bi bi-capslock-fill"></i> Crear contrato</button>
 				</div>
 			</div>
