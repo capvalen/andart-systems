@@ -16,7 +16,7 @@
 					<button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalCliente"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente</button>
 					<button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-arrow-clockwise"></i> Actualizar cotización</button>
 					<a href="cotizacion-pdf.php?id=<?=$_GET['id']?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir cotización</a>
-					<button class="btn btn-outline-secondary"><i class="bi bi-capslock-fill"></i> Crear contrato</button>
+					<button class="btn btn-outline-secondary" @click="crearContrato"><i class="bi bi-capslock-fill"></i> Crear contrato</button>
 				</div>
 			</div>
 		</div>
@@ -149,7 +149,12 @@
 			const evento = ref({})
 			const costo = ref({})
 
-			onMounted(()=>{ pedirDatos() })
+			onMounted(()=>{
+				if(!localStorage.getItem('idUsuario')) window.location = 'index.html'
+				else{
+					pedirDatos()
+				}
+			})
 
 			function fechaLatam(fecha){ if(fecha) return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') }
 			function horaLatam(hora){ if(hora) return moment(hora, 'HH:mm').format('hh:mm a') }
@@ -211,10 +216,33 @@
 				})
 			}
 
+			function crearContrato(){
+				if(!cliente.value.domicilio || !cliente.value.celular || !cliente.value.email ) alert('Faltan datos por registrar del cliente')
+				else if(evento.value.estado!=0 || evento.value.horario==0 || !evento.value.hora || !evento.value.duracion || !evento.value.lugar|| !evento.value.local || !evento.value.personas<0 ) alert('Faltan datos por confirmar en el contrato')
+				else{
+					if(confirm('¿Desea transformar esta cotización en contrato?')){
+						var datos = new FormData()
+						datos.append('pedir', 'crearContrato')
+						datos.append('id', '<?= $_GET['id']; ?>')
+						
+						fetch('./api/Cotizacion.php', {
+							method:'POST', body: datos
+						})
+						.then( serv => serv.text() )
+						.then( resp => {
+							if(resp =='ok') window.location.href = "detalle-contrato.php?id=<?= $_GET['id']; ?>";
+							else{
+								alert('Hubo un error creando el contrato')
+							}
+						})
+					}
+				}
+			}
+
 			return {
 				cliente, evento, costo,
 				pedirDatos, actualizar, updateCliente,
-				fechaLatam, horaLatam, salto, moneda
+				fechaLatam, horaLatam, salto, moneda, crearContrato
 			}
 		}
 	}).mount('#app')

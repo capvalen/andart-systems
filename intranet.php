@@ -47,10 +47,10 @@
 			const eventos = ref([])
 
 			onMounted(()=>{
-				/* if(!localStorage.getItem('idUsuario')) window.location = 'index.html'
+				if(!localStorage.getItem('idUsuario')) window.location = 'index.html'
 				else{
-				} */
-				pedirDatos()
+					pedirDatos()
+				}
 			})
 
 			function fechaLatam(fecha){ if(fecha) return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') }

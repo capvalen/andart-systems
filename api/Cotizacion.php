@@ -10,6 +10,7 @@ switch ($_POST['pedir']) {
 	case 'actualizar': actualizar($datab); break;
 	case 'updateCliente': updateCliente($datab); break;
 	case 'eliminar': eliminar($datab); break;
+	case 'crearContrato': crearContrato($datab); break;
 	default: break;
 }
 
@@ -86,13 +87,23 @@ function actualizar($db){
 		echo 'ok';
 	}else echo 'error';
 }
+function crearContrato($db){
+	$sql=$db->prepare("UPDATE `cotizacion` SET 
+	cotizacion=2
+	where id = ?; ");
+	if($sql->execute([
+		$_POST['id']
+	])){
+		echo 'ok';
+	}else echo 'error';
+}
 function updateCliente($db){
 	$cliente = json_decode($_POST['cliente'], true);
 	$sql=$db->prepare("UPDATE `cliente` SET 
 	domicilio = ?, celular = ?, email = ?
 	where id = ?; ");
 	if($sql->execute([
-		$cliente['direccion'], $cliente['celular'], $cliente['email'], 
+		$cliente['domicilio'], $cliente['celular'], $cliente['email'], 
 		$cliente['id']
 	])){
 		echo 'ok';

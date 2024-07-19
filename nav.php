@@ -9,6 +9,9 @@
 				<li class="nav-item">
 					<a class="nav-link" aria-current="page" href="cotizaciones.php"><i class="bi bi-feather"></i> Cotizaciones</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" aria-current="page" href="./"><i class="bi bi-door-closed-fill"></i> Cerrar sesion</a>
+				</li>
 			</ul>
 		</div>
 	</div>

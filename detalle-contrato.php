@@ -121,7 +121,12 @@
 			const evento = ref({})
 			const costo = ref({})
 
-			onMounted(()=>{ pedirDatos() })
+			onMounted(()=>{
+				if(!localStorage.getItem('idUsuario')) window.location = 'index.html'
+				else{
+					pedirDatos()
+				}
+			})
 
 			function fechaLatam(fecha){ if(fecha) return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') }
 			function horaLatam(hora){ if(hora) return moment(hora, 'HH:mm').format('hh:mm a') }
