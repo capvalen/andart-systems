@@ -13,5 +13,18 @@
 	</div>
 
 	<?php include 'footer.php'; ?>
+<script>
+	const { createApp, ref } = Vue
+
+	createApp({
+		setup() {
+			const eventos = ref([])
+
+			return {
+				eventos
+			}
+		}
+	}).mount('#app')
+</script>
 </body>
 </html>

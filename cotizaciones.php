@@ -23,7 +23,7 @@
 				<th>Fecha del evento</th>
 				<th>Agrupación</th>
 				<th>Total</th>
-				<th>Estado</th>
+				<th>Contestación</th>
 				<th>@</th>
 			</thead>
 			<tbody>
@@ -37,9 +37,8 @@
 					</td>
 					<td>S/ {{moneda(evento.total)}}</td>
 					<td>
-						<span v-if="evento.estado==0">Sin confirmar</span>
-						<span v-if="evento.estado==1">Confirmado</span>
-						<span v-if="evento.estado==2">Anulado</span>
+						<span v-if="evento.fechaContestacion">{{fechaLatam(evento.fechaContestacion)}}</span>
+						<span v-else>Pendiente</span>
 					</td>
 					<td>
 						<button class="btn btn-sm btn-outline-danger border-0" @click="eliminar(index)"><i class="bi bi-x-circle"></i></button>

@@ -18,8 +18,7 @@
 		<ol type="a">
 			<li><strong>LA EMPRESA</strong> tiene por naturaleza, la difusión de música latinoamericana y variada mediante la representación de artistas y agrupaciones musicales</li>
 			<li><strong>EL PROMOTOR</strong> tiene por finalidad la organización de un evento musical presencial que se llevará a cabo en el local: <strong><?= $local; ?></strong>, Fecha: <strong><?= $fechaEvento ?></strong></li>
-			<p>Teléfono: <?= $celularCliente; ?></p>
-			<p>E-mail: <?= $correoCliente; ?></p>
+			<p>Teléfono: <?= $celularCliente; ?> <br> E-mail: <?= $correoCliente; ?></p>
 		</ol>
 		<h4>SEGUNDO: CONTRATO</h4>
 		<ol type="a">

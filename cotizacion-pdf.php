@@ -7,6 +7,7 @@ require('vendor/autoload.php');
 // reference the Dompdf namespace
 use Dompdf\Dompdf;
 use Dompdf\Options;
+$numero = $_GET['id'];
 
 $html = datosContrato();
 
@@ -35,33 +36,79 @@ $dompdf->stream("Cotizacion-Andart-N-{$numContrato}.pdf", ['Attachment' => false
 function datosContrato(){
 	$numero = $_GET['id'];
 
-	$fechaSolicitud = "25 de Marzo del 2024";
-	$fechaContestacion = "Pendiente";
+	ob_start();
+	$_POST['pedir'] = 'listar';
+	$_POST['id'] = $numero;
+	include __DIR__.'/api/Cotizacion.php';
+	$datos = json_decode(ob_get_contents(), true);
+	ob_end_clean();
+	//print_r( $datos['evento'] ); die();
 
 	$nombreDueño = "ANDERSON GARCIA HUALLULLO";
 	$dniDueño = "45148533";
-	$nombreCliente = "GERONIMO YAURI JOSE MIGUEL";
-	$dniCliente = "44475064";
-	$celularCliente = "96000000";
-	$correoCliente = "96000000";
-	$domicilioCliente= "JR BUENOS AMIGOS 290 – ATE, LIMA";
-	$local = "LA CABAÑA DE JERONIMO - SATIPO";
-	$fechaEvento = "16/JUNIO/2024";
-	$personas="4";
-	$agrupacion = "Sentimiento del Ande";
-	$tipoEvento = "PRIVADO";
-	$tiempoEvento = "2 horas";
-	$horarioInicio = "Por confirmar";
-	$observaciones = "-";
-	$hospedaje = true;
-	$total = "3500";
-	$promocion = "499";
-	$adelanto = "1800";
-	$restante = "1700";
-	$fechaAdelanto = "29 de Mayo del 2024";
+
+	$nombreCliente = ucwords($datos['cliente']['nombre']);
+	$dniCliente = $datos['cliente']['dni'];
+	$celularCliente = $datos['cliente']['celular'];
+	$correoCliente = $datos['cliente']['email'];
+	$domicilioCliente= ucwords($datos['cliente']['domicilio']);
+
+	$local = $datos['evento']['local'];
+	$fechaEvento = $datos['evento']['fechaEvento'];
+	$personas= $datos['evento']['personas'];
+	$agrupacion = $datos['evento']['nombreAgrupacion'];
+	$tipoEvento = $datos['evento']['tipo'] ==0 ? 'Público' : 'Privado';
+	$tiempoEvento = $datos['evento']['duracion'];
+	if($datos['evento']['horario'] ==0 ) $horarioInicio = 'Por confirmar';
+	else{
+		$dateTime  =  DateTime::createFromFormat('H:i:s', $datos['evento']['hora']);
+		$horarioInicio = $dateTime->format('g:i a');
+	}
+	$observaciones = $datos['evento']['observaciones'];
+	$hospedaje = $datos['evento']['hospedaje'] ==1 ? true : false;
+	$total = $datos['costo']['total'];
+	$promocion = $datos['costo']['promocion'];
+	$adelanto = $datos['costo']['adelanto'];
+	$restante = $datos['costo']['total'] - $datos['costo']['adelanto'];
+	if( $datos['evento']['fechaAdelanto'] ) $fechaAdelanto = fechaLatam($datos['evento']['fechaAdelanto']);
+	else $fechaAdelanto = 'Pendiente';
+
+	$fechaSolicitud = fechaLatam($datos['evento']['diaRegistro']);
+	if( $datos['evento']['fechaContestacion'] ) $fechaContestacion = fechaLatam($datos['evento']['fechaContestacion']);
+	else $fechaContestacion='Pendiente';
 
 	ob_start();
 	include "plantilla-cotizacion.php";
 	$html = ob_get_clean();
 	return $html;
+}
+
+function fechaLatam($fecha) {
+	//echo 'la fecha ' . $fecha;
+	// Crea un objeto DateTime con la fecha en formato YYYY-MM-DD
+	$dateTime = DateTime::createFromFormat('Y-m-d', $fecha);
+
+	// Array para mapear los meses en español
+	$meses = [
+			1 => 'enero', 
+			2 => 'febrero', 
+			3 => 'marzo', 
+			4 => 'abril', 
+			5 => 'mayo', 
+			6 => 'junio', 
+			7 => 'julio', 
+			8 => 'agosto', 
+			9 => 'septiembre', 
+			10 => 'octubre', 
+			11 => 'noviembre', 
+			12 => 'diciembre'
+	];
+
+	// Extrae el día, mes y año
+	$dia = $dateTime->format('d');
+	$mes = $meses[(int)$dateTime->format('m')];
+	$año = $dateTime->format('Y');
+
+	// Formatea la fecha en el formato deseado
+	return "$dia de $mes de $año";
 }

@@ -14,7 +14,7 @@ switch ($_POST['pedir']) {
 
 function listar($db){
 	$sql=$db->prepare("SELECT *, LPAD(id, 3, '0') AS idFormateado, case agrupacion when 1 then 'Sentimiento del Ande' when 2 then 'Lobelia' end as nombreAgrupacion, date_format(registro,'%Y-%m-%d') as diaRegistro
-	FROM `cotizacion` where id=? ;"); //and cotizacion=1
+	FROM `cotizacion` where id=? and cotizacion=2;");
 	$sql->execute([ $_POST['id']]);
 	$row = $sql->fetch(PDO::FETCH_ASSOC);
 
@@ -33,7 +33,7 @@ function listarTodo($db){
 	$sql=$db->prepare("SELECT c.*, `dni`, `nombre`, `celular`, `email`, LPAD(c.id, 3, '0') AS idFormateado FROM 
 	`cotizacion` c 
 	inner join cliente cl on cl.id = c.idCliente
-	where c.activo=1 and cotizacion=1;");
+	where c.activo=1 and cotizacion=2 limit 50;");
 	$sql->execute();
 	while($row = $sql->fetch(PDO::FETCH_ASSOC))
 		$filas [] = $row;

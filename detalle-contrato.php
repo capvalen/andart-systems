@@ -9,14 +9,11 @@
 <body>
 	<?php include 'nav.php'; ?>
 	<div class="container mb-5" id="app">
-		<p class="fs-4 text-center">Cotización Show Musical C-{{evento.idFormateado}}</p>
+		<p class="fs-4 text-center">Contrato Show Musical C-{{evento.idFormateado}}</p>
 		<div class="row mb-3">
 			<div class="col-12 col-lg-9 mx-auto">
 				<div class="d-grid d-flex justify-content-between">
-					<button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente</button>
-					<button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-arrow-clockwise"></i> Actualizar cotización</button>
-					<a href="cotizacion-pdf.php?id=<?=$_GET['id']?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir cotización</a>
-					<button class="btn btn-outline-secondary"><i class="bi bi-capslock-fill"></i> Crear contrato</button>
+					<a href="contrato-pdf.php?id=<?=$_GET['id']?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir contrato final</a>
 				</div>
 			</div>
 		</div>
@@ -139,40 +136,21 @@
 				datos.append('pedir', 'listar')
 				datos.append('id', '<?= $_GET['id']; ?>')
 				
-				fetch('./api/Cotizacion.php', {
+				fetch('./api/Contrato	.php', {
 					method:'POST', body: datos
 				})
 				.then( serv => serv.json() )
 				.then( resp => {
-					if(resp.evento.cotizacion=='2') window.location.href = "detalle-contrato.php?id=<?= $_GET['id']; ?>";
-					else{
-						cliente.value = resp.cliente
+					cliente.value = resp.cliente
 						evento.value = resp.evento
 						costo.value = resp.costo
 						evento.value.fechaContestacion = moment().format('YYYY-MM-DD')
-					}
-				})
-			}
-
-			function actualizar(){
-				var datos = new FormData()
-				datos.append('pedir', 'actualizar')
-				datos.append('id', '<?= $_GET['id']; ?>')
-				datos.append('evento', JSON.stringify(evento.value))
-				
-				fetch('./api/Cotizacion.php', {
-					method:'POST', body: datos
-				})
-				.then( serv => serv.text() )
-				.then( resp => {
-					if( resp == 'ok') alert('Datos actualizados con éxito')
-					else alert('Hubo un problema al actualizar')
 				})
 			}
 
 			return {
 				cliente, evento, costo,
-				pedirDatos, actualizar,
+				pedirDatos,
 				fechaLatam, horaLatam, salto, moneda
 			}
 		}

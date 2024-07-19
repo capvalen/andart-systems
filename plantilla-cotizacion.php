@@ -4,7 +4,7 @@
 <body>
 	<main>
 	<center><img src="https://andartmusic.com/intranet/img/logo-andart.png" alt="Mi Imagen" style="width: 600px; margin-bottom:0rem;"></center>
-	<h3 class="text-center" style="margin-bottom:1rem">COTIZACIÓN DE SHOW  COT 1-<?= sprintf('%04d', $numero) ?></h3>
+	<h3 class="text-center" style="margin-bottom:1rem">COTIZACIÓN DE SHOW  COT -<?= sprintf('%04d', $numero) ?></h3>
 
 	<table>
 			<tr>
