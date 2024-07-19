@@ -13,7 +13,7 @@
 		<div class="row mb-3">
 			<div class="col-12 col-lg-9 mx-auto">
 				<div class="d-grid d-flex justify-content-between">
-					<button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente</button>
+					<button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalCliente"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente</button>
 					<button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="bi bi-arrow-clockwise"></i> Actualizar cotización</button>
 					<a href="cotizacion-pdf.php?id=<?=$_GET['id']?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-printer"></i> Imprimir cotización</a>
 					<button class="btn btn-outline-secondary"><i class="bi bi-capslock-fill"></i> Crear contrato</button>
@@ -27,7 +27,7 @@
 					<div class="card-body">
 						<p class="mb-0 fw-bold">DNI / RUC: <span class="fw-normal text-capitalize">{{cliente.dni}}</span> </p>
 						<p class="mb-0 fw-bold">Apellidos y nombres / Razón Social: <span class="fw-normal text-capitalize">{{cliente.nombre}}</span> </p>
-						<p class="mb-0 fw-bold">Dirección de vivienda: <span class="fw-normal text-capitalize">{{cliente.direccion}}</span> </p>
+						<p class="mb-0 fw-bold">Domicilio: <span class="fw-normal text-capitalize">{{cliente.domicilio}}</span> </p>
 						<p class="mb-0 fw-bold">Celular: <span class="fw-normal text-capitalize">{{cliente.celular}}</span> </p>
 						<p class="mb-0 fw-bold">E-mail: <span class="fw-normal ">{{cliente.email}}</span> </p>
 					</div>
@@ -106,7 +106,32 @@
 						<input type="number" class="form-control" v-model="evento.personas">
 					</div>
 					<div class="modal-footer border-0">
-						<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" @click="actualizar()"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
+						<button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal" @click="actualizar()"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header border-0">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Editar los campos del cliente</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<label for=""><strong>DNI:</strong> {{cliente.dni}}</label><br>
+						<label for=""><strong>Apellidos y nombres:</strong> {{cliente.nombre}}</label><br>	
+						<label for="">Domicilio</label>
+						<input type="text" class="form-control" v-model="cliente.domicilio">
+						<label for="">Celular</label>
+						<input type="text" class="form-control" v-model="cliente.celular">
+						<label for="">E-Mail</label>
+						<input type="text" class="form-control" v-model="cliente.email">
+					</div>
+					<div class="modal-footer border-0">
+						<button type="button" class="btn btn-outline-info" data-bs-dismiss="modal" @click="updateCliente"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente </button>
 					</div>
 				</div>
 			</div>
@@ -170,9 +195,25 @@
 				})
 			}
 
+			function updateCliente(){
+				var datos = new FormData()
+				datos.append('pedir', 'updateCliente')
+				datos.append('id', cliente.value.id)
+				datos.append('cliente', JSON.stringify(cliente.value))
+				
+				fetch('./api/Cotizacion.php', {
+					method:'POST', body: datos
+				})
+				.then( serv => serv.text() )
+				.then( resp => {
+					if( resp == 'ok') alert('Datos actualizados con éxito')
+					else alert('Hubo un problema al actualizar')
+				})
+			}
+
 			return {
 				cliente, evento, costo,
-				pedirDatos, actualizar,
+				pedirDatos, actualizar, updateCliente,
 				fechaLatam, horaLatam, salto, moneda
 			}
 		}

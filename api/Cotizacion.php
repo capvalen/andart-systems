@@ -8,6 +8,7 @@ switch ($_POST['pedir']) {
 	case 'listar': listar($datab); break;
 	case 'listarTodo': listarTodo($datab); break;
 	case 'actualizar': actualizar($datab); break;
+	case 'updateCliente': updateCliente($datab); break;
 	case 'eliminar': eliminar($datab); break;
 	default: break;
 }
@@ -81,6 +82,18 @@ function actualizar($db){
 		$evento['estado'], $evento['horario'], $evento['hora'], $evento['duracion'], $evento['lugar'],
 		$evento['local'], $evento['personas'], $evento['fechaContestacion'],
 		$_POST['id']
+	])){
+		echo 'ok';
+	}else echo 'error';
+}
+function updateCliente($db){
+	$cliente = json_decode($_POST['cliente'], true);
+	$sql=$db->prepare("UPDATE `cliente` SET 
+	domicilio = ?, celular = ?, email = ?
+	where id = ?; ");
+	if($sql->execute([
+		$cliente['direccion'], $cliente['celular'], $cliente['email'], 
+		$cliente['id']
 	])){
 		echo 'ok';
 	}else echo 'error';
