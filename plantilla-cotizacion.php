@@ -1,22 +1,28 @@
 <head>
-	<title>Contrato Andart Music N°-<?= sprintf('%04d', $numero) ?></title>
+	<title>Contrato Andart Music COT-<?= sprintf('%04d', $numero) ?></title>
 </head>
 <body>
 	<main>
 	<center><img src="https://andartmusic.com/intranet/img/logo-andart.png" alt="Mi Imagen" style="width: 600px; margin-bottom:0rem;"></center>
-	<h3 class="text-center" style="margin-bottom:1rem">COTIZACIÓN DE SHOW  COT -<?= sprintf('%04d', $numero) ?></h3>
-
-	<table>
-			<tr>
-					<td><strong>FECHA DE SOLICITUD</strong></td>
-					<td class="sinLinea"></td>
-					<td><strong>FECHA DE CONTESTACIÓN</strong></td>
-			</tr>
-			<tr>
-					<td><?= $fechaSolicitud ?></td>
-					<td class="sinLinea"></td>
-					<td><?= $fechaContestacion ?></td>
-			</tr>
+	
+	<table class="mt-1">
+		<tr>
+				<td><strong>FECHA DE SOLICITUD</strong></td>
+				<td class="sinLinea"></td>
+				<td rowspan="2" class="centroTodo" id="divPlomo"><h3>COTIZACIÓN DE SHOW MUSICAL</h3></td>
+				<td class="sinLinea"></td>
+				<td><strong>CONSECUTIVO</strong></td>
+				<td class="sinLinea"></td>
+				<td><strong>FECHA DE CONTESTACIÓN</strong></td>
+		</tr>
+		<tr>
+				<td class="text-capitalize"><?= $fechaSolicitud ?></td>
+				<td class="sinLinea"></td>
+				<td class="sinLinea"></td>
+				<td><h2>COT-<?= sprintf('%04d', $numero) ?></h2></td>
+				<td class="sinLinea"></td>
+				<td><?= $fechaContestacion ?></td>
+		</tr>
 	</table>
 	<br>
 	<table>
@@ -26,6 +32,8 @@
 				<p><strong>Fecha del evento: </strong> <?= $fechaEvento ?></p>
 				<p><strong>Duración del show: </strong> <?= $tiempoEvento ?></p>
 				<p><strong>Dirección / Lugar del evento: </strong> <?= $local ?></p>
+				<p class="centroVertical"><strong class="centroVertical">Agrupación: </strong> <span class="text-center" id="cuadrado"><strong>X</span> <?= $agrupacion ?></p>
+
 			</td>
 			<td class="ceroLinea"></td>
 			<td class="ceroLinea">
@@ -33,11 +41,10 @@
 				<p><strong>Celular: </strong> <?= $celularCliente ?></p>
 				<p><strong>Tipo de evento: </strong> <?= $tipoEvento ?></p>
 				<p><strong>Hora de inicio: </strong> <?= $horarioInicio ?></p>
-				<p><strong>Agrupación: </strong> <?= $agrupacion ?></p>
 			</td>
 		</tr>
 		<tr>
-			<td class="ceroLinea" colspan="4"><strong>Observaciones:</strong> <?= $observaciones; ?></td>
+			<td class="text-left" colspan="4"><strong>Observaciones:</strong> <?= $observaciones; ?></td>
 		</tr>
 		<tr>
 			<td class="ceroLinea">
@@ -95,12 +102,14 @@
 	}
 	body {
 	font-family: 'Calibri', sans-serif;
-	font-size: 0.9em;
+	font-size: 0.7em;
 	}
 	.text-center{text-align: center;}
-	p, h3{margin:0; }
+	.mt-1{margin-top:10px}
+	p,h2, h3{margin:0; }
 	table {
 		width: 100%;
+		/* border:1px solid; */
 		border-collapse: collapse;
 	}
 	 th, td {
@@ -110,6 +119,13 @@
 		padding: 8px;
 		text-align: center;
 		vertical-align: top;
+	}
+	.centroTodo{
+		text-align: center;
+		vertical-align: middle;
+	}
+	.centroVertical{
+		vertical-align: middle;
 	}
 	/* Estilo específico para la segunda columna */
 	td:nth-child(2), .sinLinea, .ceroLinea {
@@ -123,4 +139,14 @@
 	}
 	.text-left{text-align: left;}
 	footer { position: fixed; bottom: 20px; left: 0px; right: 0px; height: 50px; }
+	#divPlomo{
+		background-color: #c0c0c0;
+	}
+	#cuadrado{
+		border:1px solid black;
+		padding: 1px 4px;
+		width: 10px;
+		margin-top: 5px;
+		display: inline-block;
+	}
 </style>

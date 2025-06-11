@@ -30,7 +30,7 @@ $numContrato = sprintf('%04d', $numero);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
-$dompdf->stream("Cotizacion-Andart-N-{$numContrato}.pdf", ['Attachment' => false]);
+$dompdf->stream("Cotizacion-Andart-COT-{$numContrato}.pdf", ['Attachment' => false]);
 
 
 function datosContrato(){
