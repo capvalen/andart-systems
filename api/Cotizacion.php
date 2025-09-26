@@ -11,6 +11,7 @@ switch ($_POST['pedir']) {
 	case 'updateCliente': updateCliente($datab); break;
 	case 'eliminar': eliminar($datab); break;
 	case 'crearContrato': crearContrato($datab); break;
+    case 'filtrar': filtrar($datab); break;
 	default: break;
 }
 
@@ -30,18 +31,124 @@ function listar($db){
 		'costo' => $row
 	));
 }
-function listarTodo($db){
-	$filas = [];
-	$sql=$db->prepare("SELECT c.*, `dni`, `nombre`, `celular`, `email`, LPAD(c.id, 3, '0') AS idFormateado FROM 
-	`cotizacion` c 
-	inner join cliente cl on cl.id = c.idCliente
-	where c.activo=1 and cotizacion=1;");
-	$sql->execute();
-	while($row = $sql->fetch(PDO::FETCH_ASSOC))
-		$filas [] = $row;
 
-	echo json_encode($filas);
+function listarTodo($db){
+    try {
+        $filas = [];
+
+        $sql = $db->prepare("
+            SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email,
+                   LPAD(c.id, 3, '0') AS idFormateado,
+                   CASE c.agrupacion
+                       WHEN 1 THEN 'Sentimiento del Ande'
+                       WHEN 2 THEN 'Lobelia'
+                       WHEN 3 THEN 'LUIS O'
+                       WHEN 4 THEN 'ZOOY'
+                   END AS nombreAgrupacion
+            FROM cotizacion c
+            INNER JOIN cliente cl ON cl.id = c.idCliente
+            WHERE c.activo = 1 AND c.cotizacion = 1
+            ORDER BY c.fechaEvento DESC
+            LIMIT 50
+        ");
+        $sql->execute();
+
+        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+            $filas[] = $row;
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($filas);
+    } catch (Exception $e) {
+        http_response_code(500);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'listarTodo error: ' . $e->getMessage()]);
+    }
 }
+
+function filtrar($db){
+    try {
+        $condiciones = ["c.activo = 1", "c.cotizacion = 1"];
+        $params = [];
+
+        // mes
+        if (isset($_POST['mes']) && $_POST['mes'] != -1) {
+            $condiciones[] = "MONTH(c.fechaEvento) = ?";
+            $params[] = intval($_POST['mes']);
+        }
+
+        // año (apoya 'anio' o 'año')
+        $anio = null;
+        if (isset($_POST['anio']) && $_POST['anio'] != -1) $anio = intval($_POST['anio']);
+        if ((isset($_POST['año']) && $_POST['año'] != -1)) $anio = intval($_POST['año']);
+        if ($anio !== null) {
+            $condiciones[] = "YEAR(c.fechaEvento) = ?";
+            $params[] = $anio;
+        }
+
+        // agrupacion
+        if (isset($_POST['agrupacion']) && $_POST['agrupacion'] != -1) {
+            $condiciones[] = "c.agrupacion = ?";
+            $params[] = intval($_POST['agrupacion']);
+        }
+
+        // contestacion: 0 = pendiente (fechaContestacion NULL/''), 1 = contestada (tiene fecha)
+        if (isset($_POST['contestacion']) && $_POST['contestacion'] != -1) {
+            if (intval($_POST['contestacion']) === 0) {
+                $condiciones[] = "(c.fechaContestacion IS NULL OR c.fechaContestacion = '')";
+            } else {
+                $condiciones[] = "(c.fechaContestacion IS NOT NULL AND c.fechaContestacion <> '')";
+            }
+        }
+
+        // estado (0 = Creado, 2 = Anulada)
+        if (isset($_POST['estado']) && $_POST['estado'] != -1) {
+            $condiciones[] = "c.estado = ?";
+            $params[] = intval($_POST['estado']);
+        }
+
+        // cliente (opcional, búsqueda por nombre o dni)
+        if (isset($_POST['cliente']) && trim($_POST['cliente']) !== '') {
+            $cliente = '%' . trim($_POST['cliente']) . '%';
+            $condiciones[] = "(cl.nombre LIKE ? OR cl.dni LIKE ?)";
+            $params[] = $cliente;
+            $params[] = $cliente;
+        }
+
+        $where = implode(" AND ", $condiciones);
+
+        $sql = $db->prepare("
+            SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email,
+                   LPAD(c.id, 3, '0') AS idFormateado,
+                   CASE c.agrupacion
+                       WHEN 1 THEN 'Sentimiento del Ande'
+                       WHEN 2 THEN 'Lobelia'
+                       WHEN 3 THEN 'LUIS O'
+                       WHEN 4 THEN 'ZOOY'
+                   END AS nombreAgrupacion
+            FROM cotizacion c
+            INNER JOIN cliente cl ON cl.id = c.idCliente
+            WHERE $where
+            ORDER BY c.fechaEvento DESC
+            LIMIT 100
+        ");
+
+        $sql->execute($params);
+
+        $filas = [];
+        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+            $filas[] = $row;
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($filas);
+    } catch (Exception $e) {
+        http_response_code(500);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'filtrar error: ' . $e->getMessage()]);
+    }
+}
+
 function crear($db){
 	$cliente = json_decode($_POST['cliente'], true);
 	$sqlCliente= $db->prepare("INSERT INTO `cliente`(`dni`, `nombre`, `celular`, `email`, `registro`) VALUES (?,?,?,?,
