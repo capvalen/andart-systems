@@ -15,10 +15,11 @@
 				<p class="fw-bold">Datos del Cliente</p>
 				<div class="card">
 					<div class="card-body">
-						<label for="dni">DNI/RUC <span class="text-danger">*</span></label>
+						<p class="fw-bold">Datos de contacto</p>
+						<label for="dni">DNI <span class="text-danger">*</span></label>
 						<input type="text" id="dni" class="form-control" v-model="cliente.dni" required>
 
-						<label for="nombre">Apellidos y nombres o Razón Social <span class="text-danger">*</span></label>
+						<label for="nombre">Apellidos y nombres  <span class="text-danger">*</span></label>
 						<input type="text" id="nombre" class="form-control" v-model="cliente.nombre" required>
 
 						<label for="celular">Celular <span class="text-danger">*</span></label>
@@ -26,6 +27,27 @@
 
 						<label for="email">E-mail</label>
 						<input type="email" id="email" class="form-control" v-model="cliente.email">
+
+						<label for="email">Departamento</label>
+						<select class="form-select" id="sltDepartamento" v-model="cliente.idDepa" @change="cambioDepartamento">
+							<option v-for="departamento in departamentos" :value="departamento.idDepa">{{departamento.departamento}}</option>
+						</select>
+						<label for="email">Provincia</label>
+						<select class="form-select" id="sltProvincia" v-model="cliente.idProv" @change="cambioProvincia">
+							<option v-for="provincia in provincias" :value="provincia.idProv">{{provincia.provincia}}</option>
+						</select>
+						<label for="email">Distrito</label>
+						<select class="form-select" id="sltDistrito" v-model="cliente.idDist" >
+							<option v-for="distrito in distritos" :value="distrito.idProv">{{distrito.distrito}}</option>
+						</select>
+
+						<p class="fw-bold mt-3">Datos de empresa</p>
+
+						<label for="dni">RUC</label>
+						<input type="text" id="dni" class="form-control" v-model="cliente.ruc" >
+
+						<label for="nombre">Razón Social</label>
+						<input type="text" id="nombre" class="form-control" v-model="cliente.razon" >
 					</div>
 				</div>
 
@@ -90,14 +112,14 @@
 						<label for="costoTotal">Costo del show <span class="fw-bold">Sin IGV</span> (S/) <span class="text-danger">*</span></label>
 						<input type="number" id="costoTotal" class="form-control" v-model="costo.total" required>
 
-						<label for="promocion">Promoción (S/)</label>
-						<input type="number" id="promocion" class="form-control" v-model="costo.promocion">
-
-						<label for="adelanto">Adelanto del 50% (S/) <span class="text-danger">*</span></label>
-						<input type="number" id="adelanto" class="form-control" v-model="costo.adelanto" required>
-
-						<label for="fechaAdelanto">Fecha del Adelanto <span class="text-danger">*</span></label>
-						<input type="date" id="fechaAdelanto" class="form-control" v-model="costo.fecha" required>
+						<div class="d-none">
+							<label for="promocion">Promoción (S/)</label>
+							<input type="number" id="promocion" class="form-control" v-model="costo.promocion">
+							<label for="adelanto">Adelanto del 50% (S/) <span class="text-danger">*</span></label>
+							<input type="number" id="adelanto" class="form-control" v-model="costo.adelanto" >
+							<label for="fechaAdelanto">Fecha del Adelanto <span class="text-danger">*</span></label>
+							<input type="date" id="fechaAdelanto" class="form-control" v-model="costo.fecha" >
+						</div>
 					</div>
 				</div>
 
@@ -109,19 +131,22 @@
 	</div>
 	<?php include 'footer.php'; ?>
 <script>
-	const { createApp, ref } = Vue
+	const { createApp, ref, onMounted } = Vue
 
 	createApp({
 		setup() {
-			const cliente = ref({ dni:'', nombre: '', celular: '', email: ''  })
+			const cliente = ref({ dni:'', nombre: '', celular: '', email: '', ruc:'', razon:'', idDepa:'', idProv:'', idDist:'' })
 			const evento = ref({ 
 				fecha: moment().format('YYYY-MM-DD'), 
 				lugar: '', agrupacion: -1, local: '', duracion: 2, 
 				horario: 0, hora: '12:00', 
 				observaciones: '', hospedaje:0, personas:1, 
-				incluye:'', noIncluye:'', tipo:0 
+				incluye:'', noIncluye:'', tipo:0 ,
 			})
 			const costo = ref({ total:0, promocion: 0, adelanto: 0, fecha: moment().format('YYYY-MM-DD') })
+			const departamentos = ref([]);
+			const provincias = ref([]);
+			const distritos = ref([]);
 			
 			function validarEmail(email) {
 				const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -138,7 +163,7 @@
 				else if(!evento.value.fecha || !evento.value.lugar || evento.value.agrupacion==-1 || !evento.value.local || !evento.value.personas){ 
 					alert('Debe rellenar los campos obligatorios del evento')
 				}
-				else if( costo.value.total==0 || !costo.value.adelanto || !costo.value.fecha ){ 
+				else if( costo.value.total==0  ){  //|| !costo.value.adelanto || !costo.value.fecha
 					alert('Debe rellenar datos obligatorios del pago')
 				}
 				else if( parseFloat(costo.value.adelanto) > parseFloat(costo.value.total) ){ 
@@ -170,9 +195,51 @@
 				})
 			}
 
+			async function listarDepartamentos(){
+				var datos = new FormData()
+				datos.append('pedir', 'listarDepartamentos')
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				departamentos.value = await respuesta.json()
+			}
+			async function cambioDepartamento(){
+				cliente.value.idProv = ''; cliente.value.idDist = '';
+				provincias.value=[]; distritos.value = [];
+				if(!cliente.value.idDepa) return false
+
+				var datos = new FormData()
+				datos.append('pedir', 'listarProvincias')
+				datos.append('idDepa', cliente.value.idDepa)
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				provincias.value = await respuesta.json()
+			}
+			
+			async function cambioProvincia(){
+				cliente.value.idDist = '';
+				distritos.value = [];
+				if(!cliente.value.idProv) return false
+
+				var datos = new FormData()
+				datos.append('pedir', 'listarDistritos')
+				datos.append('idProv', cliente.value.idProv)
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				distritos.value = await respuesta.json()
+			}
+
+			onMounted(() => {
+				listarDepartamentos();
+			})
+
 			return {
 				cliente, evento, costo,
-				crear, confirmar
+				crear, confirmar,
+				departamentos, provincias,distritos,
+				cambioDepartamento, cambioProvincia
 			}
 		}
 	}).mount('#app')

@@ -23,7 +23,11 @@ function listar($db){
 	$sql->execute([ $_POST['id']]);
 	$row = $sql->fetch(PDO::FETCH_ASSOC);
 
-	$sqlCli = $db->prepare("SELECT * from cliente where id = ?;");
+	$sqlCli = $db->prepare("SELECT c.*, d.departamento, p.provincia, di.distrito from cliente c
+		left join ubdepartamento d on d.idDepa = c.idDepa
+		left join ubprovincia p on p.idProv = c.idProv
+		left join ubdistrito di on di.idDist = c.idDist
+		where c.id =  ?;");
 	$sqlCli -> execute([ $row['idCliente'] ]);
 	$rowCli = $sqlCli->fetch(PDO::FETCH_ASSOC);
 	

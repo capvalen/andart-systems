@@ -18,7 +18,7 @@
 </nav>
 
 <section class="container">
-	<img src="img/logo-andart.png" class="img-fluid">
+	<img src="img/cabecera_logo.png" class="img-fluid">
 </section>
 
 <style>

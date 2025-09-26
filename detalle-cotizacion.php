@@ -25,11 +25,16 @@
 				<p class="fw-bold">Datos del Cliente</p>
 				<div class="card">
 					<div class="card-body">
-						<p class="mb-0 fw-bold">DNI / RUC: <span class="fw-normal text-capitalize">{{cliente.dni}}</span> </p>
-						<p class="mb-0 fw-bold">Apellidos y nombres / Razón Social: <span class="fw-normal text-capitalize">{{cliente.nombre}}</span> </p>
+						<p class="mb-0 fw-bold">DNI: <span class="fw-normal text-capitalize">{{cliente.dni}}</span> </p>
+						<p class="mb-0 fw-bold">Apellidos y nombres: <span class="fw-normal text-capitalize">{{cliente.nombre}}</span> </p>
 						<p class="mb-0 fw-bold">Domicilio: <span class="fw-normal text-capitalize">{{cliente.domicilio}}</span> </p>
+						<p class="mb-0 fw-bold">Ubicación: <span class="fw-normal text-capitalize">{{cliente.departamento}} - {{cliente.provincia}} - {{cliente.distrito}}</span> </p>
+
 						<p class="mb-0 fw-bold">Celular: <span class="fw-normal text-capitalize">{{cliente.celular}}</span> </p>
 						<p class="mb-0 fw-bold">E-mail: <span class="fw-normal ">{{cliente.email}}</span> </p>
+						<br>
+						<p class="mb-0 fw-bold">RUC: <span class="fw-normal text-capitalize">{{cliente.ruc ?? '-'}}</span> </p>
+						<p class="mb-0 fw-bold">Razón Social: <span class="fw-normal text-capitalize">{{cliente.razon ?? '-'}}</span> </p>
 					</div>
 				</div>
 
@@ -104,6 +109,15 @@
 						<input type="text" class="form-control" v-model="evento.local">
 						<label for="">Cantidad de personas involucradas</label>
 						<input type="number" class="form-control" v-model="evento.personas">
+						<hr>
+						<label for="">Precio inicial</label>
+						<input type="text" class="form-control" v-model="evento.total" readonly>
+						<label for="">Promoción (Descuento)</label>
+						<input type="number" class="form-control" v-model="evento.promocion">
+						<label for="">Adelanto</label>
+						<input type="number" class="form-control" v-model="evento.adelanto">
+						<label for="">Fecha de adelanto</label>
+						<input type="date" class="form-control" v-model="evento.fechaAdelanto">
 					</div>
 					<div class="modal-footer border-0">
 						<button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal" @click="actualizar()"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
@@ -121,6 +135,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
+						<p class="mb-0"><strong>Datos de contacto</strong></p>
 						<label for=""><strong>DNI:</strong> {{cliente.dni}}</label><br>
 						<label for=""><strong>Apellidos y nombres:</strong> {{cliente.nombre}}</label><br>	
 						<label for="">Domicilio</label>
@@ -129,6 +144,12 @@
 						<input type="text" class="form-control" v-model="cliente.celular">
 						<label for="">E-Mail</label>
 						<input type="text" class="form-control" v-model="cliente.email">
+						<p class="mt-3 mt-0"><strong>Datos de la empresa</strong></p>
+						<label for="">RUC</label>
+						<input type="text" class="form-control" v-model="cliente.ruc">
+						<label for="">Razón social</label>
+						<input type="text" class="form-control" v-model="cliente.razon">
+
 					</div>
 					<div class="modal-footer border-0">
 						<button type="button" class="btn btn-outline-info" data-bs-dismiss="modal" @click="updateCliente"><i class="bi bi-arrow-clockwise"></i> Actualizar cliente </button>

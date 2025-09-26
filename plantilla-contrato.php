@@ -13,7 +13,7 @@
 	</div>
 
 	<main style="margin-top:-20px">
-		<p>Conste por el presente documento el contrato que suscribe por una parte la <strong>EMPRESA</strong>, ANDART MUSIC SAC representado por, <strong><?= $nombreDueño ?></strong>, identificado con <strong>DNI N° <?= $dniDueño ?></strong> y con domicilio legal en <strong>Av. La Esperanza N° 720 El Tambo - Huancayo</strong>; a quien en adelante se le denominará <strong>LA EMPRESA</strong> y por la otra parte <strong><?= $nombreCliente;?></strong>, identificado con <strong>DNI <?= $dniCliente; ?></strong>, con domicilio en <strong><?= $domicilioCliente;?></strong>, quién en adelante se le denominará <strong>EL PROMOTOR</strong> en los términos y condiciones siguientes:</p>
+		<p>Conste por el presente documento el contrato que suscribe por una parte la <strong>EMPRESA</strong>, ANDART MUSIC SAC representado por, <strong><?= $nombreDueño ?></strong>, identificado con <strong>DNI N° <?= $dniDueño ?></strong> y con domicilio legal en <strong>Av. La Esperanza N° 720 El Tambo - Huancayo</strong>; a quien en adelante se le denominará <strong>LA EMPRESA</strong> y por la otra parte <strong><?= $nombreCliente;?></strong>, identificado con <strong>DNI <?= $dniCliente; ?></strong>, con domicilio en <strong><?= $domicilioCliente;?></strong>, ubicado en <strong><?= $ubigeo; ?></strong>, quién en adelante se le denominará <strong>EL PROMOTOR</strong> en los términos y condiciones siguientes:</p>
 		<h4>PRIMERO: DE LAS PARTES</h4>
 		<ol type="a">
 			<li><strong>LA EMPRESA</strong> tiene por naturaleza, la difusión de música latinoamericana y variada mediante la representación de artistas y agrupaciones musicales</li>

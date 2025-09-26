@@ -21,7 +21,12 @@ function listar($db){
 	$sql->execute([ $_POST['id']]);
 	$row = $sql->fetch(PDO::FETCH_ASSOC);
 
-	$sqlCli = $db->prepare("SELECT * from cliente where id = ?;");
+	$sqlCli = $db->prepare("SELECT c.*, d.departamento, p.provincia, di.distrito from cliente c
+		left join ubdepartamento d on d.idDepa = c.idDepa
+		left join ubprovincia p on p.idProv = c.idProv
+		left join ubdistrito di on di.idDist = c.idDist
+		where c.id = ?;");
+
 	$sqlCli -> execute([ $row['idCliente'] ]);
 	$rowCli = $sqlCli->fetch(PDO::FETCH_ASSOC);
 	
@@ -33,37 +38,30 @@ function listar($db){
 }
 
 function listarTodo($db){
-    try {
-        $filas = [];
+	$filas = [];
 
-        $sql = $db->prepare("
-            SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email,
-                   LPAD(c.id, 3, '0') AS idFormateado,
-                   CASE c.agrupacion
-                       WHEN 1 THEN 'Sentimiento del Ande'
-                       WHEN 2 THEN 'Lobelia'
-                       WHEN 3 THEN 'LUIS O'
-                       WHEN 4 THEN 'ZOOY'
-                   END AS nombreAgrupacion
-            FROM cotizacion c
-            INNER JOIN cliente cl ON cl.id = c.idCliente
-            WHERE c.activo = 1 AND c.cotizacion = 1
-            ORDER BY c.fechaEvento DESC
-            LIMIT 50
-        ");
-        $sql->execute();
+	$sql = $db->prepare("SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email,
+							LPAD(c.id, 3, '0') AS idFormateado,
+							CASE c.agrupacion
+									WHEN 1 THEN 'Sentimiento del Ande'
+									WHEN 2 THEN 'Lobelia'
+									WHEN 3 THEN 'LUIS O'
+									WHEN 4 THEN 'ZOOY'
+							END AS nombreAgrupacion
+			FROM cotizacion c
+			INNER JOIN cliente cl ON cl.id = c.idCliente
+			WHERE c.activo = 1 AND c.cotizacion = 1
+			ORDER BY c.fechaEvento DESC
+			LIMIT 50
+	");
+	$sql->execute();
 
-        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-            $filas[] = $row;
-        }
+	while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+			$filas[] = $row;
+	}
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($filas);
-    } catch (Exception $e) {
-        http_response_code(500);
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['error' => 'listarTodo error: ' . $e->getMessage()]);
-    }
+	echo json_encode($filas);
+   
 }
 
 function filtrar($db){
@@ -151,10 +149,13 @@ function filtrar($db){
 
 function crear($db){
 	$cliente = json_decode($_POST['cliente'], true);
-	$sqlCliente= $db->prepare("INSERT INTO `cliente`(`dni`, `nombre`, `celular`, `email`, `registro`) VALUES (?,?,?,?,
-	 CONVERT_TZ(NOW(), @@session.time_zone, '-05:00') );");
+	$sqlCliente= $db->prepare("INSERT INTO `cliente`(`dni`, `nombre`, `celular`, `email`, `registro`,
+	ruc, razon, idDepa, idProv, idDist
+	) VALUES (?,?,?,?,CONVERT_TZ(NOW(), @@session.time_zone, '-05:00'),
+	?,?,?,?,?);");
 	$sqlCliente->execute([
-		$cliente['dni'],$cliente['nombre'],$cliente['celular'],$cliente['email']
+		$cliente['dni'],$cliente['nombre'],$cliente['celular'],$cliente['email'],
+		$cliente['ruc'], $cliente['razon'], $cliente['idDepa'], $cliente['idProv'], $cliente['idDist']
 	]);
 	$idCliente = $db->lastInsertId();
 	
@@ -162,18 +163,18 @@ function crear($db){
 	$costo = json_decode($_POST['costo'], true);
 	$sql = $db->prepare("INSERT INTO `cotizacion`(`idCliente`, `fechaEvento`, `lugar`, `agrupacion`, `local`,
 	`duracion`, `horario`, `hora`, `observaciones`, `tipo`,
-	`total`,`promocion`, `adelanto`, `fechaAdelanto`, registro,
+	`total`,`promocion`, `adelanto`,  registro,
 	`personas`, `hospedaje`
 	) VALUES (
 		?,?,?,?,?,
 		?,?,?,?,?,
-		?,?,?,?, CONVERT_TZ(NOW(), @@session.time_zone, '-05:00'),
+		?,?,?, CONVERT_TZ(NOW(), @@session.time_zone, '-05:00'),
 		?,?
 	)");
 	$sql->execute([
 		$idCliente, $evento['fecha'], $evento['lugar'], $evento['agrupacion'], $evento['local'], 
 		$evento['duracion'], $evento['horario'], $evento['hora'], $evento['observaciones'], $evento['tipo']
-		, $costo['total'], $costo['promocion'], $costo['adelanto'], $costo['fecha'],
+		, $costo['total'], $costo['promocion'], $costo['adelanto'],
 		$evento['personas'], $evento['hospedaje']
 	]);
 
@@ -184,11 +185,13 @@ function actualizar($db){
 	$evento = json_decode($_POST['evento'], true);
 	$sql=$db->prepare("UPDATE `cotizacion` SET 
 	estado = ?, horario = ?, hora = ?, duracion = ?, lugar=?,
-	`local`=?, personas=?, fechaContestacion=?
+	`local`=?, personas=?, fechaContestacion=?, promocion = ?, adelanto = ?,
+	fechaAdelanto = ?
 	where id = ?; ");
 	if($sql->execute([
 		$evento['estado'], $evento['horario'], $evento['hora'], $evento['duracion'], $evento['lugar'],
-		$evento['local'], $evento['personas'], $evento['fechaContestacion'],
+		$evento['local'], $evento['personas'], $evento['fechaContestacion'], $evento['promocion'], $evento['adelanto'],
+		$evento['fechaAdelanto'],
 		$_POST['id']
 	])){
 		echo 'ok';

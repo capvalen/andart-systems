@@ -3,7 +3,7 @@
 </head>
 <body>
 	<main>
-	<center><img src="https://andartmusic.com/intranet/img/logo-andart.png" alt="Mi Imagen" style="width: 600px; margin-bottom:0rem;"></center>
+	<center><img src="https://andartmusic.com/intranet/img/cabecera_logo.png" alt="Mi Imagen" style="width: 100%; margin-bottom:0rem;"></center>
 	
 	<table class="mt-1">
 		<tr>
@@ -26,26 +26,48 @@
 	</table>
 	<br>
 	<table>
-		<tr>
+		<tr id="trDetalle">
 			<td class="ceroLinea">
-				<p><strong>Nombre del Cliente: </strong> <?= $nombreCliente ?></p>
-				<p><strong>Fecha del evento: </strong> <?= $fechaEvento ?></p>
-				<p><strong>Duración del show: </strong> <?= $tiempoEvento ?></p>
-				<p><strong>Dirección / Lugar del evento: </strong> <?= $local ?></p>
-				<p class="centroVertical"><strong class="centroVertical">Agrupación: </strong> <span class="text-center" id="cuadrado"><strong>X</span> <?= $agrupacion ?></p>
+				<p><strong>DNI: </strong> </p>
+				<p><strong>NOMBRE DEL CLIENTE: </strong> </p>
+				<p><strong>UBICACIÓN: </strong> </p>
+				<p><strong>FECHA DEL EVENTO: </strong> </p>
+				<p><strong>DURACIÓN DEL SHOW: </strong> </p>
+				<p><strong>DIRECCIÓN / LUGAR DEL EVENTO: </strong> </p>
+				<p class="centroVertical"><strong class="centroVertical">AGRUPACIÓN: </strong> </p>
 
 			</td>
-			<td class="ceroLinea"></td>
 			<td class="ceroLinea">
-				<p><strong>DNI: </strong> <?= $dniCliente ?></p>
-				<p><strong>Celular: </strong> <?= $celularCliente ?></p>
-				<p><strong>Tipo de evento: </strong> <?= $tipoEvento ?></p>
-				<p><strong>Hora de inicio: </strong> <?= $horarioInicio ?></p>
+				<p><?= $dniCliente ?></p>
+				<p><?= $nombreCliente ?></p>
+				<p><?= $ubigeo ?></p>
+				<p><?= $fechaEvento ?></p>
+				<p><?= $tiempoEvento ?></p>
+				<p><?= $local ?></p>
+				<p class="centroVertical"><span class="text-center" id="cuadrado"><strong>x</span> <?= $agrupacion ?></p>
 			</td>
+			<td class="ceroLinea">
+				<p><strong>RUC: </strong> </p>
+				<p><strong>RAZÓN SOCIAL: </strong> </p>
+				<p><strong>CELULAR: </strong> </p>
+				<p><strong>TIPO DE EVENTO: </strong> </p>
+				<p><strong>HORA DE INICIO: </strong> </p>
+			</td>
+			<td class="ceroLinea">
+				<p><?= $rucCliente ?></p>
+				<p><?= $razonCliente ?></p>
+				<p><?= $celularCliente ?></p>
+				<p><?= $tipoEvento ?></p>
+				<p><?= $horarioInicio ?></p>
+			</td>
+
 		</tr>
 		<tr>
-			<td class="text-left" colspan="4"><strong>Observaciones:</strong> <?= $observaciones; ?></td>
+			<td class="text-left" colspan="4"><strong>OBSERVACIONES:</strong> <?= $observaciones; ?></td>
 		</tr>
+		
+	</table>
+	<table>
 		<tr>
 			<td class="ceroLinea">
 				<p><strong>No incluye:</strong></p>
@@ -55,12 +77,12 @@
 				</ol>
 			</td>
 			<td class="ceroLinea">
-				<p><strong>Requisitos del Cliente:</strong></p>
+				<p><strong>Requerimientos:</strong></p>
 				<ol>
 					<li>Permisos y protocolos requeridos</li>
 					<li>Aforo permitido</li>
 					<li>Hidratación <?= $personas ?> personas en escenario</li>
-					<li>Almuerzo <?= $personas ?> personas</li>
+					<li>Alimentación <?= $personas ?> personas</li>
 					<?php if($hospedaje): ?>
 					<li>Hospedaje <?= $personas ?> personas</li>
 					<?php endif; ?>
@@ -68,10 +90,9 @@
 			</td>
 			<td class="ceroLinea">
 				<p><strong>Costo del Show:</strong></p><br>
-				<p>Costo total (Sin I.G.V.): S/ <?= number_format($total,2) ?></p>
-				<p>Promoción: S/ <?= number_format($promocion,2) ?></p>
-				<p>Adelanto: S/ <?= number_format($adelanto,2) ?></p>
-				<p>Fecha de adelanto: <?= $fechaAdelanto ?></p>
+				<p>Costo del show (Sin IGV): S/ <?= number_format($base,2) ?></p>
+				<p>IGV: S/ <?= number_format($igv,2) ?></p>
+				<p>Monto total: S/ <?= number_format($total,2) ?></p>
 			</td>
 		</tr>
 	</table>
@@ -79,10 +100,12 @@
 	<table>
 		<tr>
 			<td style="width:33%; text-align:center;font-size:0.8em;" class="ceroLinea">
-				<p><br><br><br><br><br>_____________________________<br>FIRMA DEL VENDEDOR</p>
+				<img src="https://andartmusic.com/intranet/img/firma.png" style="width:60px;">
+				<p>_____________________________<br>FIRMA DEL VENDEDOR</p>
 			</td>
 			<td style="width:33%; text-align:center;font-size:0.8em;" class="ceroLinea">
-				<p><br><br><br><br><br>_____________________________<br>AUTORIZACIÓN <br> (JEFE DE ÁREA O UNIDAD)</p>
+				<img src="https://andartmusic.com/intranet/img/sello.png" style="width:60px;">
+				<p>_____________________________<br>AUTORIZACIÓN <br> (JEFE DE ÁREA O UNIDAD)</p>
 			</td>
 			<td style="width:33%; text-align:center;font-size:0.8em;" class="ceroLinea">
 				<p><br><br><br><br><br>_____________________________<br>FIRMA DEL CLIENTE</p>
@@ -92,7 +115,7 @@
 	
 	</main>
 	<footer>
-		<img src="https://andartmusic.com/intranet/img/pie-largo.png" alt="Mi Imagen" style="width:100%">
+		<img src="https://andartmusic.com/intranet/img/pie_morado.png" alt="Pie de página" style="width:100%">
 	</footer>
 </body>
 
@@ -148,5 +171,8 @@
 		width: 10px;
 		margin-top: 5px;
 		display: inline-block;
+	}
+	#trDetalle p{
+		margin-bottom:5px
 	}
 </style>

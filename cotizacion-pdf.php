@@ -52,6 +52,12 @@ function datosContrato(){
 	$celularCliente = $datos['cliente']['celular'];
 	$correoCliente = $datos['cliente']['email'];
 	$domicilioCliente= ucwords($datos['cliente']['domicilio']);
+	$rucCliente = ucwords($datos['cliente']['ruc'] ?? '-');
+	$razonCliente = ucwords($datos['cliente']['razon'] ?? '-');
+	if( isset($datos['cliente']['departamento']) )
+		$ubigeo = ucwords($datos['cliente']['departamento'] .' - '. $datos['cliente']['provincia'] .' - '. $datos['cliente']['distrito']);
+	else $ubigeo = '-';
+
 
 	$local = $datos['evento']['local'];
 	$fechaEvento = $datos['evento']['fechaEvento'];
@@ -66,7 +72,9 @@ function datosContrato(){
 	}
 	$observaciones = $datos['evento']['observaciones'];
 	$hospedaje = $datos['evento']['hospedaje'] ==1 ? true : false;
-	$total = $datos['costo']['total'];
+	$total = floatval($datos['costo']['total']);
+	$base = round($total / 1.18,2);
+	$igv =round( $total - $base,2);
 	$promocion = $datos['costo']['promocion'];
 	$adelanto = $datos['costo']['adelanto'];
 	$restante = $datos['costo']['total'] - $datos['costo']['adelanto'];

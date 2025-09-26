@@ -52,7 +52,13 @@ function datosContrato(){
 	$celularCliente = $datos['cliente']['celular'];
 	$correoCliente = $datos['cliente']['email'];
 	$domicilioCliente= ucwords($datos['cliente']['domicilio']);
-
+	$rucCliente = ucwords($datos['cliente']['ruc'] ?? '-');
+	$razonCliente = ucwords($datos['cliente']['razon'] ?? '-');
+	
+	if( $datos['cliente']['departamento']  )
+		$ubigeo = ucwords($datos['cliente']['departamento'] .' - '. $datos['cliente']['provincia'] .' - '. $datos['cliente']['distrito']);
+	else $ubigeo = '-';
+	
 	$local = ucwords($datos['evento']['local']);
 	$fechaEvento = fechaLatam($datos['evento']['fechaEvento']);
 	$personas= $datos['evento']['personas'];
