@@ -3,16 +3,16 @@
 </head>
 <body>
 	<header>
-		<img src="https://andartmusic.com/intranet/img/logo-andart.png" alt="Mi Imagen" style="width:90%">
+		<img src="https://andartmusic.com/intranet/img/cabecera_logo.png" alt="Mi Imagen" style="width:100%">
 	</header>
 	<pie>
-		<img src="https://andartmusic.com/intranet/img/pie.png" alt="Mi Imagen" style="width:100%">
+		<img src="https://andartmusic.com/intranet/img/pie_morado.png" alt="Mi Imagen" style="width:100%">
 	</pie>
 	<div id="firmaPegada">
 		<img src="https://andartmusic.com/intranet/img/firma_gris.jpg"  style="width:180px">
 	</div>
 
-	<main style="margin-top:-20px">
+	<main style="margin-top:-60px">
 		<p>Conste por el presente documento el contrato que suscribe por una parte la <strong>EMPRESA</strong>, ANDART MUSIC SAC representado por, <strong><?= $nombreDueño ?></strong>, identificado con <strong>DNI N° <?= $dniDueño ?></strong> y con domicilio legal en <strong>Av. La Esperanza N° 720 El Tambo - Huancayo</strong>; a quien en adelante se le denominará <strong>LA EMPRESA</strong> y por la otra parte <strong><?= $nombreCliente;?></strong>, identificado con <strong>DNI <?= $dniCliente; ?></strong>, con domicilio en <strong><?= $domicilioCliente;?></strong>, ubicado en <strong><?= $ubigeo; ?></strong>, quién en adelante se le denominará <strong>EL PROMOTOR</strong> en los términos y condiciones siguientes:</p>
 		<h4>PRIMERO: DE LAS PARTES</h4>
 		<ol type="a">
@@ -81,7 +81,7 @@
 	</table>
 	</main>
 	<footer>
-		<img src="https://andartmusic.com/intranet/img/pie.png" alt="Mi Imagen" style="width:100%">
+		<img src="https://andartmusic.com/intranet/img/pie_morado.png" alt="Mi Imagen" style="width:100%">
 	</footer>
 	
 	
@@ -103,7 +103,7 @@ pie { position:absolute; bottom: -60px; left: 0px; right: 0px; height: 50px; }
 footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px; }
 
 p:last-child { page-break-after: never; }
-main{margin-top:70px;}
+main{margin-top:30px;}
 
 h4,h5{color: #2f5496; }
 .italic{font-style: italic;}

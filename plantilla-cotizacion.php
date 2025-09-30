@@ -8,19 +8,19 @@
 	<table class="mt-1">
 		<tr>
 				<td><strong>FECHA DE SOLICITUD</strong></td>
-				<td class="sinLinea"></td>
+				
 				<td rowspan="2" class="centroTodo" id="divPlomo"><h3>COTIZACIÓN DE SHOW MUSICAL</h3></td>
-				<td class="sinLinea"></td>
+				
 				<td><strong>CONSECUTIVO</strong></td>
-				<td class="sinLinea"></td>
+				
 				<td><strong>FECHA DE CONTESTACIÓN</strong></td>
 		</tr>
 		<tr>
 				<td class="text-capitalize"><?= $fechaSolicitud ?></td>
-				<td class="sinLinea"></td>
-				<td class="sinLinea"></td>
-				<td><h2>COT-<?= sprintf('%04d', $numero) ?></h2></td>
-				<td class="sinLinea"></td>
+				
+				
+				<td class="conLineas"><h2>COT-<?= sprintf('%04d', $numero) ?></h2></td>
+				
 				<td><?= $fechaContestacion ?></td>
 		</tr>
 	</table>
@@ -28,9 +28,9 @@
 	<table>
 		<tr id="trDetalle">
 			<td class="ceroLinea">
-				<p><strong>DNI: </strong> </p>
+				<!-- <p><strong>DNI: </strong> </p> -->
 				<p><strong>NOMBRE DEL CLIENTE: </strong> </p>
-				<p><strong>UBICACIÓN: </strong> </p>
+				<!-- <p><strong>UBICACIÓN: </strong> </p> -->
 				<p><strong>FECHA DEL EVENTO: </strong> </p>
 				<p><strong>DURACIÓN DEL SHOW: </strong> </p>
 				<p><strong>DIRECCIÓN / LUGAR DEL EVENTO: </strong> </p>
@@ -38,24 +38,24 @@
 
 			</td>
 			<td class="ceroLinea">
-				<p><?= $dniCliente ?></p>
+				<!-- <p><?= $dniCliente ?></p> -->
 				<p><?= $nombreCliente ?></p>
-				<p><?= $ubigeo ?></p>
+				<!-- <p><?= $ubigeo ?></p> -->
 				<p><?= $fechaEvento ?></p>
 				<p><?= $tiempoEvento ?></p>
 				<p><?= $local ?></p>
 				<p class="centroVertical"><span class="text-center" id="cuadrado"><strong>x</span> <?= $agrupacion ?></p>
 			</td>
 			<td class="ceroLinea">
-				<p><strong>RUC: </strong> </p>
 				<p><strong>RAZÓN SOCIAL: </strong> </p>
+				<p><strong>RUC: </strong> </p>
 				<p><strong>CELULAR: </strong> </p>
 				<p><strong>TIPO DE EVENTO: </strong> </p>
 				<p><strong>HORA DE INICIO: </strong> </p>
 			</td>
 			<td class="ceroLinea">
-				<p><?= $rucCliente ?></p>
 				<p><?= $razonCliente ?></p>
+				<p><?= $rucCliente ?></p>
 				<p><?= $celularCliente ?></p>
 				<p><?= $tipoEvento ?></p>
 				<p><?= $horarioInicio ?></p>
@@ -163,7 +163,11 @@
 	.text-left{text-align: left;}
 	footer { position: fixed; bottom: 20px; left: 0px; right: 0px; height: 50px; }
 	#divPlomo{
+		border: 1px solid black;
 		background-color: #c0c0c0;
+	}
+	.conLineas{
+		border: 1px solid black!important;
 	}
 	#cuadrado{
 		border:1px solid black;
