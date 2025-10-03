@@ -65,6 +65,7 @@ function datosContrato(){
 	$agrupacion = $datos['evento']['nombreAgrupacion'];
 	$tipoEvento = $datos['evento']['tipo'] ==0 ? 'Público' : 'Privado';
 	$tiempoEvento = $datos['evento']['duracion'];
+	$tieneIGV = $datos['evento']['igv'];
 	if($datos['evento']['horario'] ==0 ) $horarioInicio = 'Por confirmar';
 	else{
 		$dateTime  =  DateTime::createFromFormat('H:i:s', $datos['evento']['hora']);
@@ -72,9 +73,9 @@ function datosContrato(){
 	}
 	$observaciones = $datos['evento']['observaciones'];
 	$hospedaje = $datos['evento']['hospedaje'] ==1 ? true : false;
-	$total = floatval($datos['costo']['total']);
-	$base = round($total / 1.18,2);
-	$igv =round( $total - $base,2);
+	$base = floatval($datos['costo']['total']);
+	$igv =round( $base * 0.18 ,2);
+	$total = round($base + $igv,2);
 	$promocion = $datos['costo']['promocion'];
 	$adelanto = $datos['costo']['adelanto'];
 	$restante = $datos['costo']['total'] - $datos['costo']['adelanto'];

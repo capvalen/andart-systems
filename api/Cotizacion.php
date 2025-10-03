@@ -40,7 +40,7 @@ function listar($db){
 function listarTodo($db){
 	$filas = [];
 
-	$sql = $db->prepare("SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email,
+	$sql = $db->prepare("SELECT c.*, cl.dni, cl.nombre, cl.celular, cl.email, cl.ruc, cl.razon,
 							LPAD(c.id, 3, '0') AS idFormateado,
 							CASE c.agrupacion
 									WHEN 1 THEN 'Sentimiento del Ande'
@@ -186,12 +186,12 @@ function actualizar($db){
 	$sql=$db->prepare("UPDATE `cotizacion` SET 
 	estado = ?, horario = ?, hora = ?, duracion = ?, lugar=?,
 	`local`=?, personas=?, fechaContestacion=?, promocion = ?, adelanto = ?,
-	fechaAdelanto = ?
+	fechaAdelanto = ?, total = ?, igv=?
 	where id = ?; ");
 	if($sql->execute([
 		$evento['estado'], $evento['horario'], $evento['hora'], $evento['duracion'], $evento['lugar'],
 		$evento['local'], $evento['personas'], $evento['fechaContestacion'], $evento['promocion'], $evento['adelanto'],
-		$evento['fechaAdelanto'],
+		$evento['fechaAdelanto'], $evento['total'],$evento['igv'],
 		$_POST['id']
 	])){
 		echo 'ok';
@@ -210,10 +210,12 @@ function crearContrato($db){
 function updateCliente($db){
 	$cliente = json_decode($_POST['cliente'], true);
 	$sql=$db->prepare("UPDATE `cliente` SET 
-	domicilio = ?, celular = ?, email = ?
+	domicilio = ?, celular = ?, email = ?,
+	ruc = ?, razon = ?
 	where id = ?; ");
 	if($sql->execute([
 		$cliente['domicilio'], $cliente['celular'], $cliente['email'], 
+		$cliente['ruc'], $cliente['razon'], 
 		$cliente['id']
 	])){
 		echo 'ok';

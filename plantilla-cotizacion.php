@@ -27,7 +27,7 @@
 	<br>
 	<table>
 		<tr id="trDetalle">
-			<td class="ceroLinea">
+			<td class="ceroLinea" style="width:auto; white-space: nowrap;">
 				<!-- <p><strong>DNI: </strong> </p> -->
 				<p><strong>NOMBRE DEL CLIENTE: </strong> </p>
 				<!-- <p><strong>UBICACIÓN: </strong> </p> -->
@@ -37,7 +37,7 @@
 				<p class="centroVertical"><strong class="centroVertical">AGRUPACIÓN: </strong> </p>
 
 			</td>
-			<td class="ceroLinea">
+			<td class="ceroLinea" style="width:auto; white-space: nowrap;">
 				<!-- <p><?= $dniCliente ?></p> -->
 				<p><?= $nombreCliente ?></p>
 				<!-- <p><?= $ubigeo ?></p> -->
@@ -46,14 +46,15 @@
 				<p><?= $local ?></p>
 				<p class="centroVertical"><span class="text-center" id="cuadrado"><strong>x</span> <?= $agrupacion ?></p>
 			</td>
-			<td class="ceroLinea">
+			<td id="vacio" class="ceroLinea"></td>
+			<td class="ceroLinea" style=" white-space: nowrap;">
 				<p><strong>RAZÓN SOCIAL: </strong> </p>
 				<p><strong>RUC: </strong> </p>
 				<p><strong>CELULAR: </strong> </p>
 				<p><strong>TIPO DE EVENTO: </strong> </p>
 				<p><strong>HORA DE INICIO: </strong> </p>
 			</td>
-			<td class="ceroLinea">
+			<td class="ceroLinea" style=" white-space: nowrap;">
 				<p><?= $razonCliente ?></p>
 				<p><?= $rucCliente ?></p>
 				<p><?= $celularCliente ?></p>
@@ -90,8 +91,10 @@
 			</td>
 			<td class="ceroLinea">
 				<p><strong>Costo del Show:</strong></p><br>
-				<p>Costo del show (Sin IGV): S/ <?= number_format($base,2) ?></p>
-				<p>IGV: S/ <?= number_format($igv,2) ?></p>
+				<?php if($tieneIGV=='1'): ?>
+					<p>Costo del show (Sin IGV): S/ <?= number_format($base,2) ?></p>
+					<p>IGV: S/ <?= number_format($igv,2) ?></p>
+				<?php endif;?>
 				<p>Monto total: S/ <?= number_format($total,2) ?></p>
 			</td>
 		</tr>
@@ -178,5 +181,8 @@
 	}
 	#trDetalle p{
 		margin-bottom:5px
+	}
+	#vacio{
+		width:200px;
 	}
 </style>

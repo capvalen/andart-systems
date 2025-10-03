@@ -111,9 +111,14 @@
 						<input type="number" class="form-control" v-model="evento.personas">
 						<hr>
 						<label for="">Precio inicial</label>
-						<input type="text" class="form-control" v-model="evento.total" readonly>
+						<input type="number" class="form-control" v-model="evento.total">
 						<label for="">Promoción (Descuento)</label>
 						<input type="number" class="form-control" v-model="evento.promocion">
+						<label for="">¿Tiene IGV?</label>
+						<select class="form-select" id="sltIgv" v-model="evento.igv">
+							<option value="0">No</option>
+							<option value="1">Si</option>
+						</select>
 						<label for="">Adelanto</label>
 						<input type="number" class="form-control" v-model="evento.adelanto">
 						<label for="">Fecha de adelanto</label>
@@ -216,6 +221,7 @@
 				})
 				.then( serv => serv.text() )
 				.then( resp => {
+					costo.value.total = evento.value.total
 					if( resp == 'ok') alert('Datos actualizados con éxito')
 					else alert('Hubo un problema al actualizar')
 				})
