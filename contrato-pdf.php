@@ -10,6 +10,7 @@ use Dompdf\Options;
 $numero = $_GET['id'];
 
 $html = datosContrato();
+//echo $html; die();
 
 
 $options = new Options();
@@ -65,6 +66,8 @@ function datosContrato(){
 	$agrupacion = $datos['evento']['nombreAgrupacion'];
 	$tipoEvento = $datos['evento']['tipo'] ==0 ? 'Público' : 'Privado';
 	$tiempoEvento = $datos['evento']['duracion'];
+	$tieneIGV = $datos['evento']['igv'];
+
 	if($datos['evento']['horario'] ==0 ) $horarioInicio = 'Por confirmar';
 	else{
 		$dateTime  =  DateTime::createFromFormat('H:i:s', $datos['evento']['hora']);
@@ -72,10 +75,18 @@ function datosContrato(){
 	}
 	$observaciones = $datos['evento']['observaciones'];
 	$hospedaje = $datos['evento']['hospedaje'] ==1 ? true : false;
-	$total = $datos['costo']['total'];
+	$base = floatval($datos['costo']['total']);
+	$igv =round( $base * 0.18 ,2);
+	$total = round($base + $igv,2);
 	$promocion = $datos['costo']['promocion'];
 	$adelanto = $datos['costo']['adelanto'];
-	$restante = $datos['costo']['total'] - $datos['costo']['adelanto'];
+
+	if($tieneIGV=='1'):
+		$restante = $total - $datos['costo']['adelanto'];
+	else: 
+		$restante = $base - $datos['costo']['adelanto'];
+	endif;
+	
 	if( $datos['evento']['fechaAdelanto'] ) $fechaAdelanto = fechaLatam($datos['evento']['fechaAdelanto']);
 	else $fechaAdelanto = 'Pendiente';
 

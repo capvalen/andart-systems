@@ -65,8 +65,8 @@
 				<p><strong>HORA DE INICIO: </strong> </p>
 			</td>
 			<td class="ceroLinea tdDatos" style=" white-space: nowrap;">
-				<p class="text-capitalize"><?= strtoupper($razonCliente) ?></p>
-				<p class="text-capitalize"><?= strtoupper($rucCliente) ?></p>
+				<p class="text-capitalize"><?= strtoupper($razonCliente ?? '-') ?></p>
+				<p class="text-capitalize"><?= strtoupper($rucCliente ?? '-') ?></p>
 				<p class="text-capitalize"><?= strtoupper($celularCliente) ?></p>
 				<p class="text-capitalize"><?= strtoupper($tipoEvento) ?></p>
 				<p class="text-capitalize"><?= strtoupper($horarioInicio) ?></p>
@@ -104,8 +104,10 @@
 				<?php if($tieneIGV=='1'): ?>
 					<p>Costo del show (Sin IGV): S/ <?= number_format($base,2) ?></p>
 					<p>IGV: S/ <?= number_format($igv,2) ?></p>
+					<p>Monto total: S/ <?= number_format($total,2) ?></p>
+				<?php else: ?>
+					<p>Monto total: S/ <?= number_format($base,2) ?></p>
 				<?php endif;?>
-				<p>Monto total: S/ <?= number_format($total,2) ?></p>
 				<p><i>* Monto no facturado</i></p>
 			</td>
 		</tr>

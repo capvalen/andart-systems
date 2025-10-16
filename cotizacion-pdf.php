@@ -52,8 +52,8 @@ function datosContrato(){
 	$celularCliente = $datos['cliente']['celular'];
 	$correoCliente = $datos['cliente']['email'];
 	$domicilioCliente= ucwords($datos['cliente']['domicilio']);
-	$rucCliente = ucwords($datos['cliente']['ruc'] ?? '-');
-	$razonCliente = ucwords($datos['cliente']['razon'] ?? '-');
+	$rucCliente = $datos['cliente']['ruc'] =='' ? '-':$datos['cliente']['ruc'];
+	$razonCliente = $datos['cliente']['razon'] =='' ? '-':$datos['cliente']['razon'];
 	if( isset($datos['cliente']['departamento']) )
 		$ubigeo = ucwords($datos['cliente']['departamento'] .' - '. $datos['cliente']['provincia'] .' - '. $datos['cliente']['distrito']);
 	else $ubigeo = '-';

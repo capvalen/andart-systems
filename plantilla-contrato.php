@@ -9,7 +9,7 @@
 		<img src="https://andartmusic.com/intranet/img/pie_morado.png" alt="Mi Imagen" style="width:100%">
 	</pie>
 	<div id="firmaPegada">
-		<img src="https://andartmusic.com/intranet/img/firma_gris.jpg"  style="width:180px">
+		<img src="https://andartmusic.com/intranet/img/firma_gris.png"  style="width:180px">
 	</div>
 
 	<main style="margin-top:-60px">
@@ -24,7 +24,12 @@
 		<h4>SEGUNDO: CONTRATO</h4>
 		<ol type="a">
 			<li>Las partes acuerdan suscribir el presente contrato mediante la cual <strong>LA EMPRESA</strong> se compromete a la prestación de servicios musicales de la agrupación <?= $agrupacion; ?> durante el periodo de <?= $tiempoEvento ?> horas, en el horario <?= $horarioCompleto ?>, lugar y fecha indicada en el inciso "b" del primer punto.</li>
-			<li><strong>EL PROMOTOR</strong> se compromete <strong>a pagar la suma de S/ <?= number_format($total,2); ?> soles,</strong> por la prestación de los servicios musicales, dando como <strong>adelanto la suma de S/ <?= number_format($adelanto,2) ?> soles</strong> el <?= $fechaAdelanto ?> y <strong>completando el restante la suma de S/ <?= number_format($restante,2) ?> soles,</strong> <span class="italic">un día antes del evento o durante la mañana del evento en horario administrativo (9am – 1pm) antes del inicio de la presentación,</span> de no realizarse el abono en la forma señalada, la prestación de servicios musicales <strong class="subrayado">se entiende como cancelada sin obligación a devolución de lo abonado, ni a ningún tipo de indemnización.</strong> </li>
+			<li><strong>EL PROMOTOR</strong> se compromete <strong>a pagar la suma de S/
+				<?php if($tieneIGV=='1'): ?>
+				 <?= number_format($total,2) ?>
+				<?php else: ?>
+					<?= number_format($base,2) ?>
+				<?php endif;?> soles,</strong> por la prestación de los servicios musicales, dando como <strong>adelanto la suma de S/ <?= number_format($adelanto,2) ?> soles</strong> el <?= $fechaAdelanto ?> y <strong>completando el restante la suma de S/ <?= number_format($restante,2) ?> soles,</strong> <span class="italic">un día antes del evento o durante la mañana del evento en horario administrativo (9am – 1pm) antes del inicio de la presentación,</span> de no realizarse el abono en la forma señalada, la prestación de servicios musicales <strong class="subrayado">se entiende como cancelada sin obligación a devolución de lo abonado, ni a ningún tipo de indemnización.</strong> </li>
 			<li>La fecha de presentación de <strong>la agrupación</strong> es <strong>INAMOVIBLE</strong>.</li>
 			<li>Cualquier demora en el plazo de pago establecido exceptúa a <strong>LA EMPRESA</strong> de cualquier obligación contraída.</li>
 			<li>Sin perjuicio de lo antes expuesto queda convenido en forma expresa por las partes contratantes que el show artístico programado en el presente contrato podrá ser suspendido solamente en los siguientes casos:
@@ -67,7 +72,7 @@
 		<table>
 			<tr>
 					<td>
-						<div><img src="https://andartmusic.com/intranet/img/firma_color.jpg"  style="width:180px"></div>
+						<div><img src="https://andartmusic.com/intranet/img/firma_color.png"  style="width:180px"></div>
 						<p><strong>______________________________<br>
 							<?= $nombreDueño ?><br><?= $dniDueño ?><br>LA EMPRESA
 						</strong></p>
