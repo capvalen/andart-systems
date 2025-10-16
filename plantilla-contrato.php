@@ -13,6 +13,7 @@
 	</div>
 
 	<main style="margin-top:-60px">
+		<h2 style="text-align:center">CONTRATO N° <?= sprintf('%04d', $numero) ?></h2>
 		<p>Conste por el presente documento el contrato que suscribe por una parte la <strong>EMPRESA</strong>, ANDART MUSIC SAC representado por, <strong><?= $nombreDueño ?></strong>, identificado con <strong>DNI N° <?= $dniDueño ?></strong> y con domicilio legal en <strong>Av. La Esperanza N° 720 El Tambo - Huancayo</strong>; a quien en adelante se le denominará <strong>LA EMPRESA</strong> y por la otra parte <strong><?= $nombreCliente;?></strong>, identificado con <strong>DNI <?= $dniCliente; ?></strong>, con domicilio en <strong><?= $domicilioCliente;?></strong>, ubicado en <strong><?= $ubigeo; ?></strong>, quién en adelante se le denominará <strong>EL PROMOTOR</strong> en los términos y condiciones siguientes:</p>
 		<h4>PRIMERO: DE LAS PARTES</h4>
 		<ol type="a">
@@ -22,7 +23,7 @@
 		</ol>
 		<h4>SEGUNDO: CONTRATO</h4>
 		<ol type="a">
-			<li>Las partes acuerdan suscribir el presente contrato mediante la cual <strong>LA EMPRESA</strong> se compromete a la prestación de servicios musicales de la agrupación <?= $agrupacion; ?> durante el periodo de <?= $tiempoEvento ?>, en el horario <?= $horarioCompleto ?>, lugar y fecha indicada en el inciso "b" del primer punto.</li>
+			<li>Las partes acuerdan suscribir el presente contrato mediante la cual <strong>LA EMPRESA</strong> se compromete a la prestación de servicios musicales de la agrupación <?= $agrupacion; ?> durante el periodo de <?= $tiempoEvento ?> horas, en el horario <?= $horarioCompleto ?>, lugar y fecha indicada en el inciso "b" del primer punto.</li>
 			<li><strong>EL PROMOTOR</strong> se compromete <strong>a pagar la suma de S/ <?= number_format($total,2); ?> soles,</strong> por la prestación de los servicios musicales, dando como <strong>adelanto la suma de S/ <?= number_format($adelanto,2) ?> soles</strong> el <?= $fechaAdelanto ?> y <strong>completando el restante la suma de S/ <?= number_format($restante,2) ?> soles,</strong> <span class="italic">un día antes del evento o durante la mañana del evento en horario administrativo (9am – 1pm) antes del inicio de la presentación,</span> de no realizarse el abono en la forma señalada, la prestación de servicios musicales <strong class="subrayado">se entiende como cancelada sin obligación a devolución de lo abonado, ni a ningún tipo de indemnización.</strong> </li>
 			<li>La fecha de presentación de <strong>la agrupación</strong> es <strong>INAMOVIBLE</strong>.</li>
 			<li>Cualquier demora en el plazo de pago establecido exceptúa a <strong>LA EMPRESA</strong> de cualquier obligación contraída.</li>

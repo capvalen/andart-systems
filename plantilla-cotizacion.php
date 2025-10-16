@@ -5,23 +5,35 @@
 	<main>
 	<center><img src="https://andartmusic.com/intranet/img/cabecera_logo.png" alt="Mi Imagen" style="width: 100%; margin-bottom:0rem;"></center>
 	
-	<table class="mt-1">
+	<table class="mt-1" id="tablaCabeza">
 		<tr>
-				<td><strong>FECHA DE SOLICITUD</strong></td>
+			<td colspan="3"><strong>FECHA DE SOLICITUD</strong></td>
+			<td rowspan="3" class="centroTodo" id="divPlomo"><h2>COTIZACIÓN DE SHOW MUSICAL</h2></td>
+			<td rowspan="2" style="vertical-align: middle; text-align: center;"><strong>CONSECUTIVO</strong></td>
+
+			<td colspan="3"><strong>FECHA DE CONTESTACIÓN</strong></td>
+
 				
-				<td rowspan="2" class="centroTodo" id="divPlomo"><h3>COTIZACIÓN DE SHOW MUSICAL</h3></td>
-				
-				<td><strong>CONSECUTIVO</strong></td>
-				
-				<td><strong>FECHA DE CONTESTACIÓN</strong></td>
 		</tr>
 		<tr>
-				<td class="text-capitalize"><?= $fechaSolicitud ?></td>
+			<th>DIA</th>
+			<th>MM</th>
+			<th>AA</th>
+			<th>DIA</th>
+			<th>MM</th>
+			<th>AA</th>
+		</tr>
+		<tr>
+				<td class="text-capitalize"><?= $fechaSolicitud['dia'] ?></td>
+				<td class="text-capitalize"><?= $fechaSolicitud['mes'] ?></td>
+				<td class="text-capitalize"><?= $fechaSolicitud['año'] ?></td>
 				
 				
 				<td class="conLineas"><h2>COT-<?= sprintf('%04d', $numero) ?></h2></td>
 				
-				<td><?= $fechaContestacion ?></td>
+				<td class="text-capitalize"><?= $fechaContestacion['dia'] ?></td>
+				<td class="text-capitalize"><?= $fechaContestacion['mes'] ?></td>
+				<td class="text-capitalize"><?= $fechaContestacion['año'] ?></td>
 		</tr>
 	</table>
 	<br>
@@ -34,17 +46,15 @@
 				<p><strong>FECHA DEL EVENTO: </strong> </p>
 				<p><strong>DURACIÓN DEL SHOW: </strong> </p>
 				<p><strong>DIRECCIÓN / LUGAR DEL EVENTO: </strong> </p>
-				<p class="centroVertical"><strong class="centroVertical">AGRUPACIÓN: </strong> </p>
+				<p class="centroVertical" ><strong class="centroVertical">AGRUPACIÓN: </strong> </p>
 
 			</td>
-			<td class="ceroLinea" style="width:auto; white-space: nowrap;">
-				<!-- <p><?= $dniCliente ?></p> -->
-				<p><?= $nombreCliente ?></p>
-				<!-- <p><?= $ubigeo ?></p> -->
-				<p><?= $fechaEvento ?></p>
-				<p><?= $tiempoEvento ?></p>
-				<p><?= $local ?></p>
-				<p class="centroVertical"><span class="text-center" id="cuadrado"><strong>x</span> <?= $agrupacion ?></p>
+			<td class="ceroLinea tdDatos" style="width:auto; white-space: nowrap;">
+				<p class="text-capitalize"><?= strtoupper($nombreCliente) ?></p>
+				<p class="text-capitalize"><?= strtoupper($fechaEvento) ?></p>
+				<p class="text-capitalize"><?= strtoupper(str_replace('.0','',$tiempoEvento)) ?> HORAS </p>
+				<p class="text-capitalize"><?= strtoupper($local) ?></p>
+				<p class="centroVertical text-capitalize" style="border-bottom:none!important;"><span class="text-center" id="cuadrado"><strong>x</span> <?= strtoupper($agrupacion) ?></p>
 			</td>
 			<td id="vacio" class="ceroLinea"></td>
 			<td class="ceroLinea" style=" white-space: nowrap;">
@@ -54,17 +64,17 @@
 				<p><strong>TIPO DE EVENTO: </strong> </p>
 				<p><strong>HORA DE INICIO: </strong> </p>
 			</td>
-			<td class="ceroLinea" style=" white-space: nowrap;">
-				<p><?= $razonCliente ?></p>
-				<p><?= $rucCliente ?></p>
-				<p><?= $celularCliente ?></p>
-				<p><?= $tipoEvento ?></p>
-				<p><?= $horarioInicio ?></p>
+			<td class="ceroLinea tdDatos" style=" white-space: nowrap;">
+				<p class="text-capitalize"><?= strtoupper($razonCliente) ?></p>
+				<p class="text-capitalize"><?= strtoupper($rucCliente) ?></p>
+				<p class="text-capitalize"><?= strtoupper($celularCliente) ?></p>
+				<p class="text-capitalize"><?= strtoupper($tipoEvento) ?></p>
+				<p class="text-capitalize"><?= strtoupper($horarioInicio) ?></p>
 			</td>
 
 		</tr>
 		<tr>
-			<td class="text-left" colspan="4"><strong>OBSERVACIONES:</strong> <?= $observaciones; ?></td>
+			<td class="text-left" colspan="5"><strong>OBSERVACIONES:</strong> <?= $observaciones; ?></td>
 		</tr>
 		
 	</table>
@@ -96,6 +106,7 @@
 					<p>IGV: S/ <?= number_format($igv,2) ?></p>
 				<?php endif;?>
 				<p>Monto total: S/ <?= number_format($total,2) ?></p>
+				<p><i>* Monto no facturado</i></p>
 			</td>
 		</tr>
 	</table>
@@ -110,9 +121,7 @@
 				<img src="https://andartmusic.com/intranet/img/sello.png" style="width:60px;">
 				<p>_____________________________<br>AUTORIZACIÓN <br> (JEFE DE ÁREA O UNIDAD)</p>
 			</td>
-			<td style="width:33%; text-align:center;font-size:0.8em;" class="ceroLinea">
-				<p><br><br><br><br><br>_____________________________<br>FIRMA DEL CLIENTE</p>
-			</td>
+		
 		</tr>
 	</table>
 	
@@ -154,7 +163,7 @@
 		vertical-align: middle;
 	}
 	/* Estilo específico para la segunda columna */
-	td:nth-child(2), .sinLinea, .ceroLinea {
+	.sinLinea, .ceroLinea {
 		border-top: none;
 		border-bottom: none;
 	}
@@ -167,7 +176,8 @@
 	footer { position: fixed; bottom: 20px; left: 0px; right: 0px; height: 50px; }
 	#divPlomo{
 		border: 1px solid black;
-		background-color: #c0c0c0;
+		background-color: #3c0560;
+		color:white;
 	}
 	.conLineas{
 		border: 1px solid black!important;
@@ -185,4 +195,14 @@
 	#vacio{
 		width:200px;
 	}
+	.tdDatos p{
+		text-align: center;
+		width: 100%;
+		border-bottom: 1.5px solid black!important;
+	}
+	#tablaCabeza td{
+		vertical-align: middle; text-align: center;
+		padding: 0;
+	}
+	
 </style>

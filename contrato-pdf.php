@@ -80,7 +80,9 @@ function datosContrato(){
 	else $fechaAdelanto = 'Pendiente';
 
 	//Falta
-	$horarioCompleto = "2PM - 4PM";
+	$hora = new DateTime($datos['evento']['hora']);
+	$sumaHora = $hora->add(new DateInterval('PT' . floatval($datos['evento']['duracion']) . 'H'));
+	$horarioCompleto =  strtoupper($horarioInicio . " - " .  $sumaHora->format('h:i A') );
 
 	ob_start();
 	include "plantilla-contrato.php";

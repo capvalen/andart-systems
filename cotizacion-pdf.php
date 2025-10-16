@@ -10,7 +10,7 @@ use Dompdf\Options;
 $numero = $_GET['id'];
 
 $html = datosContrato();
-
+//echo $html; die();
 
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
@@ -60,7 +60,13 @@ function datosContrato(){
 
 
 	$local = $datos['evento']['local'];
-	$fechaEvento = $datos['evento']['fechaEvento'];
+	if($datos['evento']['fechaEvento'] =='' ) $fechaEvento = 'Por confirmar';
+	else{
+		$fechaEvento = fechaLatam($datos['evento']['fechaEvento']);
+		/* $dateTime  =  DateTime::createFromFormat('Y-m-d', $datos['evento']['fechaEvento']);
+		$fechaEvento = $dateTime->format('j \\d\\e F \\d\\e Y'); */
+	}
+	//$fechaEvento = $datos['evento']['fechaEvento'];
 	$personas= $datos['evento']['personas'];
 	$agrupacion = $datos['evento']['nombreAgrupacion'];
 	$tipoEvento = $datos['evento']['tipo'] ==0 ? 'Público' : 'Privado';
@@ -82,9 +88,24 @@ function datosContrato(){
 	if( $datos['evento']['fechaAdelanto'] ) $fechaAdelanto = fechaLatam($datos['evento']['fechaAdelanto']);
 	else $fechaAdelanto = 'Pendiente';
 
-	$fechaSolicitud = fechaLatam($datos['evento']['diaRegistro']);
-	if( $datos['evento']['fechaContestacion'] ) $fechaContestacion = fechaLatam($datos['evento']['fechaContestacion']);
-	else $fechaContestacion='Pendiente';
+	$fSol =  DateTime::createFromFormat('Y-m-d', $datos['evento']['diaRegistro']);
+	$fechaSolicitud = array(
+		'dia' => $fSol->format('d'),
+		'mes' => $fSol->format('m'),
+		'año' => $fSol->format('Y')
+	);
+	if( $datos['evento']['fechaContestacion'] ) {
+		$fSol =  DateTime::createFromFormat('Y-m-d', $datos['evento']['fechaContestacion']);
+		$fechaContestacion = array(
+			'dia' => $fSol->format('d'),
+			'mes' => $fSol->format('m'),
+			'año' => $fSol->format('Y')
+		);
+	}
+	else $fechaContestacion = array(
+			'dia' => '-',
+			'mes' => '-',
+			'año' => '-');
 
 	ob_start();
 	include "plantilla-cotizacion.php";

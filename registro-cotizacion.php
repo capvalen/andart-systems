@@ -27,6 +27,8 @@
 
 						<label for="email">E-mail</label>
 						<input type="email" id="email" class="form-control" v-model="cliente.email">
+						<label for="direccion">Dirección</label>
+						<input type="direccion" id="direccion" class="form-control" v-model="cliente.domicilio">
 
 						<label for="email">Departamento</label>
 						<select class="form-select" id="sltDepartamento" v-model="cliente.idDepa" @change="cambioDepartamento">

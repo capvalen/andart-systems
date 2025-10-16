@@ -69,7 +69,8 @@
 						<p class="mb-0 fw-bold">Incluye hospedaje:
 							<span class="fw-normal text-capitalize">{{evento.hospedaje ==0? 'No': 'Si'}}</span>
 						</p>
-						<p class="mb-0 fw-bold">Observaciones: <p class="fw-normal mb-0" v-html="salto(evento.observaciones)"></p> </p>
+						<p class="mb-0 fw-bold">Observaciones: <p class="fw-normal mb-0" v-html="salto(evento.observacionesVisual)"></p> </p>
+						<p><strong>Fecha de solicitud: </strong> {{fechaLatam(evento.registro)}} </p>
 					</div>
 				</div>
 			</div>
@@ -88,7 +89,7 @@
 						<label for="">Fecha de contestación</label>
 						<input type="date" class="form-control" v-model="evento.fechaContestacion">
 						<label for="">Estado</label>
-						<select name="" id="" class="form-select" v-else="evento.estado">
+						<select name="" id="" class="form-select" >
 							<option value="0">Creado</option>
 							<option value="2">Anular cotización</option>
 						</select>
@@ -123,6 +124,8 @@
 						<input type="number" class="form-control" v-model="evento.adelanto">
 						<label for="">Fecha de adelanto</label>
 						<input type="date" class="form-control" v-model="evento.fechaAdelanto">
+						<label for="">Observaciones</label>
+						<textarea class="form-control" id="txtObs" v-model="evento.observaciones"></textarea>
 					</div>
 					<div class="modal-footer border-0">
 						<button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal" @click="actualizar()"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
@@ -167,7 +170,7 @@
 
 	<?php include 'footer.php'; ?>
 	<script>
-	const { createApp, ref, onMounted } = Vue
+	const { createApp, ref, onMounted, computed } = Vue
 
 	createApp({
 		setup() {
@@ -188,6 +191,10 @@
 				if(linea) return linea.replace(/\r/g, '<br>')
 				else return ''
 			}
+			function saltoEdit(linea){ 
+				if(linea) return linea.replace('<br>', "\r\n")
+				else return ''
+			}
 			function moneda(cantidad){ if(cantidad) return parseFloat(cantidad).toFixed(2); else '0.000'; }
 
 			function pedirDatos(){
@@ -206,6 +213,8 @@
 						evento.value = resp.evento
 						costo.value = resp.costo
 						evento.value.fechaContestacion = moment().format('YYYY-MM-DD')
+						evento.value.observacionesVisual = evento.value.observaciones
+						evento.value.observaciones = saltoEdit(evento.value.observaciones)
 					}
 				})
 			}

@@ -150,12 +150,15 @@ function filtrar($db){
 function crear($db){
 	$cliente = json_decode($_POST['cliente'], true);
 	$sqlCliente= $db->prepare("INSERT INTO `cliente`(`dni`, `nombre`, `celular`, `email`, `registro`,
-	ruc, razon, idDepa, idProv, idDist
+	ruc, razon, idDepa, idProv, idDist,
+	domicilio
 	) VALUES (?,?,?,?,CONVERT_TZ(NOW(), @@session.time_zone, '-05:00'),
-	?,?,?,?,?);");
+	?,?,?,?,?,
+	?);");
 	$sqlCliente->execute([
 		$cliente['dni'],$cliente['nombre'],$cliente['celular'],$cliente['email'],
-		$cliente['ruc'], $cliente['razon'], $cliente['idDepa'], $cliente['idProv'], $cliente['idDist']
+		$cliente['ruc'], $cliente['razon'], $cliente['idDepa'], $cliente['idProv'], $cliente['idDist'],
+		$cliente['domicilio']
 	]);
 	$idCliente = $db->lastInsertId();
 	
