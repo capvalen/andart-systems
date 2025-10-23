@@ -214,11 +214,11 @@ function updateCliente($db){
 	$cliente = json_decode($_POST['cliente'], true);
 	$sql=$db->prepare("UPDATE `cliente` SET 
 	domicilio = ?, celular = ?, email = ?,
-	ruc = ?, razon = ?
+	ruc = ?, razon = ?, idDepa = ?, idProv = ?, idDist = ?
 	where id = ?; ");
 	if($sql->execute([
 		$cliente['domicilio'], $cliente['celular'], $cliente['email'], 
-		$cliente['ruc'], $cliente['razon'], 
+		$cliente['ruc'], $cliente['razon'], $cliente['idDepa'], $cliente['idProv'], $cliente['idDist'],
 		$cliente['id']
 	])){
 		echo 'ok';

@@ -40,7 +40,7 @@
 						</select>
 						<label for="email">Distrito</label>
 						<select class="form-select" id="sltDistrito" v-model="cliente.idDist" >
-							<option v-for="distrito in distritos" :value="distrito.idProv">{{distrito.distrito}}</option>
+							<option v-for="distrito in distritos" :value="distrito.idDist">{{distrito.distrito}}</option>
 						</select>
 
 						<p class="fw-bold mt-3">Datos de empresa</p>

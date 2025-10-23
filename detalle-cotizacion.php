@@ -134,7 +134,7 @@
 			</div>
 		</div>
 
-		<!-- Modal -->
+		<!-- Modal del cliente -->
 		<div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -143,11 +143,23 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p class="mb-0"><strong>Datos de contacto</strong></p>
+						<p class="mb-0"><strong>Datos del contacto</strong></p>
 						<label for=""><strong>DNI:</strong> {{cliente.dni}}</label><br>
 						<label for=""><strong>Apellidos y nombres:</strong> {{cliente.nombre}}</label><br>	
 						<label for="">Domicilio</label>
 						<input type="text" class="form-control" v-model="cliente.domicilio">
+						<label for="email">Departamento</label>
+						<select class="form-select" id="sltDepartamento" v-model="cliente.idDepa" @change="cambioDepartamento">
+							<option v-for="departamento in departamentos" :value="departamento.idDepa">{{departamento.departamento}}</option>
+						</select>
+						<label for="email">Provincia</label>
+						<select class="form-select" id="sltProvincia" v-model="cliente.idProv" @change="cambioProvincia">
+							<option v-for="provincia in provincias" :value="provincia.idProv">{{provincia.provincia}}</option>
+						</select>
+						<label for="email">Distrito</label>
+						<select class="form-select" id="sltDistrito" v-model="cliente.idDist" >
+							<option v-for="distrito in distritos" :value="distrito.idDist">{{distrito.distrito}}</option>
+						</select>
 						<label for="">Celular</label>
 						<input type="text" class="form-control" v-model="cliente.celular">
 						<label for="">E-Mail</label>
@@ -177,10 +189,14 @@
 			const cliente = ref({})
 			const evento = ref({})
 			const costo = ref({})
+			const departamentos = ref([]);
+			const provincias = ref([]);
+			const distritos = ref([]);
 
 			onMounted(()=>{
 				if(!localStorage.getItem('idUsuario')) window.location = 'index.html'
 				else{
+					listarDepartamentos()
 					pedirDatos()
 				}
 			})
@@ -209,12 +225,17 @@
 				.then( resp => {
 					if(resp.evento.cotizacion=='2') window.location.href = "detalle-contrato.php?id=<?= $_GET['id']; ?>";
 					else{
+					
 						cliente.value = resp.cliente
 						evento.value = resp.evento
 						costo.value = resp.costo
 						evento.value.fechaContestacion = moment().format('YYYY-MM-DD')
 						evento.value.observacionesVisual = evento.value.observaciones
 						evento.value.observaciones = saltoEdit(evento.value.observaciones)
+						if(cliente.value.provincia) provincias.value.push({ idProv: cliente.value.idProv, provincia: cliente.value.provincia})
+						else cambioDepartamento()
+						if(cliente.value.distrito) distritos.value.push({ idDist: cliente.value.idDist, distrito: cliente.value.distrito})
+						else cambioProvincia()
 					}
 				})
 			}
@@ -275,10 +296,48 @@
 				}
 			}
 
+			async function listarDepartamentos(){
+				var datos = new FormData()
+				datos.append('pedir', 'listarDepartamentos')
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				departamentos.value = await respuesta.json()
+			}
+			async function cambioDepartamento(){
+				cliente.value.idProv = ''; cliente.value.idDist = '';
+				provincias.value=[]; distritos.value = [];
+				if(!cliente.value.idDepa) return false
+
+				var datos = new FormData()
+				datos.append('pedir', 'listarProvincias')
+				datos.append('idDepa', cliente.value.idDepa)
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				provincias.value = await respuesta.json()
+			}
+			
+			async function cambioProvincia(){
+				cliente.value.idDist = '';
+				distritos.value = [];
+				if(!cliente.value.idProv) return false
+
+				var datos = new FormData()
+				datos.append('pedir', 'listarDistritos')
+				datos.append('idProv', cliente.value.idProv)
+				respuesta = await fetch('./api/Ubigeo.php', {
+					method: 'POST', body: datos
+				})
+				distritos.value = await respuesta.json()
+			}
+
 			return {
 				cliente, evento, costo,
 				pedirDatos, actualizar, updateCliente,
-				fechaLatam, horaLatam, salto, moneda, crearContrato
+				fechaLatam, horaLatam, salto, moneda, crearContrato,
+				listarDepartamentos, cambioDepartamento, cambioProvincia,
+				departamentos, provincias, distritos
 			}
 		}
 	}).mount('#app')
